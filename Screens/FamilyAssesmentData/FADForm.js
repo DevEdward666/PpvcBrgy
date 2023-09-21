@@ -40,10 +40,11 @@ import {
 } from '../../Services/Actions/ResidentsActions';
 import CustomAlert from '../../Plugins/CustomAlert';
 import CustomSnackBar from '../../Plugins/CustomSnackBar';
+import {useNavigation} from '@react-navigation/native';
 //import {Actions} from 'react-native-router-flux';
 import styles from './style';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
-const FADForm = ({navigation}) => {
+const FADForm = () => {
   const users_reducers = useSelector(state => state.UserInfoReducers.data);
   const residents_list = useSelector(
     state => state.ResidentReducers.residents_list,
@@ -57,6 +58,7 @@ const FADForm = ({navigation}) => {
   const resident_form = useSelector(
     state => state.ResidentReducers.resident_form,
   );
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const [qualityness, setQualityness] = useState('');
   const [Occationfortheland, setOccationfortheland] = useState('');
@@ -221,6 +223,8 @@ const FADForm = ({navigation}) => {
     {label: 'Skill Training', value: 'Skill Training'},
     {label: 'Employment', value: 'Employment'},
   ];
+  // console.log(residents_data_exist?.data[0]?.fam_members.length);
+  console.log(fam_member);
   const handleSubmit = useCallback(async () => {
     setspinner(true);
 
@@ -234,13 +238,25 @@ const FADForm = ({navigation}) => {
           yearsstayed,
           Occationfortheland,
           qualityness,
-          waterconnectionsaver,
-          hasComfortRoomsaver,
-          hasLightConnectionsaver,
-          wastemanagementsaver,
-          kahimtangsakomunidadsaver,
-          victimofabusesaver,
-          serbisyosaver,
+          waterconnectionsaver.length > 0
+            ? waterconnectionsaver
+            : [waterconnection[0]?.value],
+          hasComfortRoomsaver.length > 0
+            ? hasComfortRoomsaver
+            : [hasComfortRoom[0]?.value],
+          hasLightConnectionsaver.length > 0
+            ? hasLightConnectionsaver
+            : [hasLightConnection[0]?.value],
+          wastemanagementsaver.length > 0
+            ? wastemanagementsaver
+            : [wastemanagement[0]?.value],
+          kahimtangsakomunidadsaver.length > 0
+            ? kahimtangsakomunidadsaver
+            : [kahimtangsakomunidad[0]?.value],
+          victimofabusesaver.length > 0
+            ? victimofabusesaver
+            : [victimofabuse[0]?.value],
+          serbisyosaver.length > 0 ? serbisyosaver : [serbisyo[0]?.value],
           fam_member,
         ),
       );
@@ -290,7 +306,6 @@ const FADForm = ({navigation}) => {
   }, [
     dispatch,
     fam_member,
-    residents_issuccess,
     serbisyosaver,
     victimofabusesaver,
     kahimtangsakomunidadsaver,
@@ -298,8 +313,8 @@ const FADForm = ({navigation}) => {
     hasLightConnectionsaver,
     hasComfortRoomsaver,
     waterconnectionsaver,
-    users_reducers.resident_pk,
-    residents_data_exist?.data,
+    users_reducers,
+    residents_data_exist,
   ]);
   useEffect(() => {
     let mounted = true;
@@ -330,45 +345,43 @@ const FADForm = ({navigation}) => {
     await setInfoError(false);
   }, []);
   const handleFourthInfo = useCallback(async () => {
+    onRefresh();
     await setInfoError(false);
   }, []);
   const handleNextInfo = useCallback(async () => {
-    // setRefreshing(true);
     setPeopleInsidetheHouse([]);
     setfam_member([]);
-    // setRefreshing(false);
-    // dispatch(action_get_FAD_exist(users_reducers?.resident_pk));
 
-    residents_data_exist[0]?.fam_members?.map(item => {
+    residents_data_exist[0]?.fam_members?.forEach(item => {
+      const fullName = `${item.first_name} ${item.last_name}`;
+      const resident_pk = parseInt(item.resident_pk);
+
       setPeopleInsidetheHouse(prev => [
         ...prev,
-        {
-          PeopleName: item?.first_name + ' ' + item?.last_name,
-          realationship: item?.rel,
-        },
+        {PeopleName: fullName, realationship: item.rel},
       ]);
       setfam_member(prev => [
         ...prev,
-        {
-          PeopleName: item?.first_name + ' ' + item?.last_name,
-          resident_pk: parseInt(item?.resident_pk),
-          rel: item?.rel,
-        },
+        {PeopleName: fullName, resident_pk, rel: item.rel},
       ]);
     });
-    if (
-      qualityness == undefined ||
-      Occationfortheland == undefined ||
-      Occationofthehouse == undefined ||
-      yearsstayed == undefined ||
-      structure == undefined
-    ) {
-      await setInfoError(true);
+
+    const requiredFields = [
+      qualityness,
+      Occationfortheland,
+      Occationofthehouse,
+      yearsstayed,
+      structure,
+    ];
+
+    if (requiredFields.some(field => field === undefined)) {
+      setInfoError(true);
       alert('Please Fill All Fields');
     } else {
-      await setInfoError(false);
+      setInfoError(false);
     }
   }, [
+    residents_data_exist,
     qualityness,
     Occationfortheland,
     Occationofthehouse,
@@ -378,269 +391,222 @@ const FADForm = ({navigation}) => {
 
   const onChangeSearch = useCallback(
     async value => {
-      if (value === ' ') {
-        await setsearchvalue(null);
-      } else {
-        await setsearchvalue(value);
-        await dispatch(action_get_residents_list(searchvalue));
-      }
+      setsearchvalue(value);
     },
-    [dispatch, searchvalue],
+    [dispatch],
   );
-
+  useEffect(() => {
+    const getSearchResident = () => {
+      dispatch(action_get_residents_list(searchvalue));
+    };
+    getSearchResident();
+  }, [searchvalue]);
   const handleCheckBoxKahitang = useCallback(
     async (selection, item) => {
-      let mounted = true;
-      let found = false;
-      if (mounted) {
-        {
-          kahimtangsakomunidad.map(items => {
-            if (items.label === item.label) {
-              setkahimtangsakomunidad(
-                kahimtangsakomunidad.filter(item => item.label !== items.label),
-              );
-              setkahimtangsakomunidadsaver(
-                kahimtangsakomunidadsaver.filter(item => item !== items.label),
-              );
-              found = true;
-            }
-          });
-        }
-        if (!found) {
-          await setkahimtangsakomunidad(prev => [
-            ...prev,
-            {label: item.label, value: item.label},
-          ]);
-          await setkahimtangsakomunidadsaver(prev => [...prev, item.label]);
-        }
+      if (
+        kahimtangsakomunidad.some(
+          existingItem => existingItem.label === item.label,
+        )
+      ) {
+        setkahimtangsakomunidad(prev =>
+          prev.filter(existingItem => existingItem.label !== item.label),
+        );
+        setkahimtangsakomunidadsaver(prev =>
+          prev.filter(existingItem => existingItem !== item.label),
+        );
+      } else {
+        setkahimtangsakomunidad(prev => [
+          ...prev,
+          {label: item.label, value: item.label},
+        ]);
+        setkahimtangsakomunidadsaver(prev => [...prev, item.label]);
       }
-      return () => {
-        mounted = false;
-      };
     },
-    [kahimtangsakomunidad],
+    [kahimtangsakomunidad, kahimtangsakomunidadsaver],
   );
 
   const handleCheckBoxwaterConntection = useCallback(
     async (selections, item) => {
-      let mounted = true;
-      let found = false;
-      if (mounted) {
-        {
-          waterconnection.map(items => {
-            if (items.label === item.label) {
-              setwaterconnection(
-                waterconnection.filter(item => item.label !== items.label),
-              );
-              setwaterconnectionsaver(
-                waterconnectionsaver.filter(item => item !== items.label),
-              );
-              found = true;
-            }
-          });
-        }
-        if (!found) {
-          await setwaterconnection(prev => [
-            ...prev,
-            {label: item.label, value: item.label},
-          ]);
-          await setwaterconnectionsaver(prev => [...prev, item.label]);
-        }
+      if (
+        waterconnection.some(existingItem => existingItem.label === item.label)
+      ) {
+        console.log('im here');
+        setwaterconnection(prev =>
+          prev.filter(existingItem => existingItem.label !== item.label),
+        );
+        setwaterconnectionsaver(prev =>
+          prev.filter(existingItem => existingItem !== item.label),
+        );
+      } else {
+        console.log('im here2');
+        setwaterconnection(prev => [
+          ...prev,
+          {label: item.label, value: item.label},
+        ]);
+        setwaterconnectionsaver(prev => [...prev, item.label]);
       }
-      return () => {
-        mounted = false;
-      };
     },
-    [waterconnection],
+    [waterconnection, waterconnectionsaver],
   );
   const handleCheckBoxKasilyas = useCallback(
     async (selection, item) => {
-      let mounted = true;
-      let found = false;
-      if (mounted) {
-        {
-          hasComfortRoom.map(items => {
-            if (items.label === item.label) {
-              sethasComfortRoom(
-                hasComfortRoom.filter(item => item.label !== items.label),
-              );
-              sethasComfortRoomsaver(
-                hasComfortRoomsaver.filter(item => item !== items.label),
-              );
-              found = true;
-            }
-          });
-        }
-        if (!found) {
-          await sethasComfortRoom(prev => [
-            ...prev,
-            {label: item.label, value: item.label},
-          ]);
-          await sethasComfortRoomsaver(prev => [...prev, item.label]);
-        }
+      if (
+        hasComfortRoom.some(existingItem => existingItem.label === item.label)
+      ) {
+        sethasComfortRoom(prev =>
+          prev.filter(existingItem => existingItem.label !== item.label),
+        );
+        sethasComfortRoomsaver(prev =>
+          prev.filter(existingItem => existingItem !== item.label),
+        );
+      } else {
+        sethasComfortRoom(prev => [
+          ...prev,
+          {label: item.label, value: item.label},
+        ]);
+        sethasComfortRoomsaver(prev => [...prev, item.label]);
       }
-      return () => {
-        mounted = false;
-      };
     },
-    [hasComfortRoom],
+    [hasComfortRoom, hasComfortRoomsaver],
   );
-
   const handleCheckBoxKuryente = useCallback(
     async (selection, item) => {
-      let mounted = true;
-      let found = false;
-      if (mounted) {
-        {
-          hasLightConnection.map(items => {
-            if (items.label === item.label) {
-              sethasLightConnection(
-                hasLightConnection.filter(item => item.label !== items.label),
-              );
-              sethasLightConnectionsaver(
-                hasLightConnectionsaver.filter(item => item !== items.label),
-              );
-              found = true;
-            }
-          });
-        }
-        if (!found) {
-          await sethasLightConnection(prev => [
-            ...prev,
-            {label: item.label, value: item.label},
-          ]);
-          await sethasLightConnectionsaver(prev => [...prev, item.label]);
-        }
+      if (
+        hasLightConnection.some(
+          existingItem => existingItem.label === item.label,
+        )
+      ) {
+        sethasLightConnection(prev =>
+          prev.filter(existingItem => existingItem.label !== item.label),
+        );
+        sethasLightConnectionsaver(prev =>
+          prev.filter(existingItem => existingItem !== item.label),
+        );
+      } else {
+        sethasLightConnection(prev => [
+          ...prev,
+          {label: item.label, value: item.label},
+        ]);
+        sethasLightConnectionsaver(prev => [...prev, item.label]);
       }
-      return () => {
-        mounted = false;
-      };
     },
-    [hasLightConnection],
+    [hasLightConnection, hasLightConnectionsaver],
   );
 
   const handleCheckBoxBasura = useCallback(
     async (selection, item) => {
-      let mounted = true;
-      let found = false;
-      if (mounted) {
-        {
-          wastemanagement.map(items => {
-            if (items.label === item.label) {
-              setwastemanagement(
-                wastemanagement.filter(item => item.label !== items.label),
-              );
-              setwastemanagementsaver(
-                wastemanagementsaver.filter(item => item !== items.label),
-              );
-              found = true;
-            }
-          });
-        }
-        if (!found) {
-          await setwastemanagement(prev => [
-            ...prev,
-            {label: item.label, value: item.label},
-          ]);
-          await setwastemanagementsaver(prev => [...prev, item.label]);
-        }
+      if (
+        wastemanagement.some(existingItem => existingItem.label === item.label)
+      ) {
+        setwastemanagement(prev =>
+          prev.filter(existingItem => existingItem.label !== item.label),
+        );
+        setwastemanagementsaver(prev =>
+          prev.filter(existingItem => existingItem !== item.label),
+        );
+      } else {
+        setwastemanagement(prev => [
+          ...prev,
+          {label: item.label, value: item.label},
+        ]);
+        setwastemanagementsaver(prev => [...prev, item.label]);
       }
-      return () => {
-        mounted = false;
-      };
     },
-    [wastemanagement],
+    [wastemanagement, wastemanagementsaver],
   );
-
   const handleCheckBoxPangabuso = useCallback(
     async (selection, item) => {
-      let mounted = true;
-      let found = false;
-      if (mounted) {
-        {
-          victimofabuse.map(items => {
-            if (items.label === item.label) {
-              setvictimofabuse(
-                victimofabuse.filter(item => item.label !== items.label),
-              );
-              setvictimofabusesaver(
-                victimofabusesaver.filter(item => item !== items.label),
-              );
-              found = true;
-            }
-          });
-        }
-        if (!found) {
-          await setvictimofabuse(prev => [
-            ...prev,
-            {label: item.label, value: item.label},
-          ]);
-          await setvictimofabusesaver(prev => [...prev, item.label]);
-        }
+      if (
+        victimofabuse.some(existingItem => existingItem.label === item.label)
+      ) {
+        setvictimofabuse(prev =>
+          prev.filter(existingItem => existingItem.label !== item.label),
+        );
+        setvictimofabusesaver(prev =>
+          prev.filter(existingItem => existingItem !== item.label),
+        );
+      } else {
+        setvictimofabuse(prev => [
+          ...prev,
+          {label: item.label, value: item.label},
+        ]);
+        setvictimofabusesaver(prev => [...prev, item.label]);
       }
-      return () => {
-        mounted = false;
-      };
     },
-    [victimofabuse],
+    [victimofabuse, victimofabusesaver],
   );
 
   const handleCheckBoxSerbisyo = useCallback(
     async (selection, item) => {
-      let mounted = true;
-      let found = false;
-      let agency = 'TBD';
-      if (mounted) {
-        {
-          serbisyo.map(items => {
-            if (items.label === item.label) {
-              setserbisyo(serbisyo.filter(item => item.label !== items.label));
-              setserbisyosaver(
-                serbisyosaver.filter(item => item.programa !== items.label),
-              );
-              found = true;
-            }
-          });
-        }
-        if (!found) {
-          if (item.label === 'Scholarship') {
+      let found = serbisyo.some(
+        existingItem => existingItem.label === item.label,
+      );
+
+      if (found) {
+        setserbisyo(prev =>
+          prev.filter(existingItem => existingItem.label !== item.label),
+        );
+        setserbisyosaver(prev =>
+          prev.filter(existingItem => existingItem.programa !== item.label),
+        );
+      } else {
+        let agency = 'TBD';
+
+        switch (item.label) {
+          case 'Scholarship':
             agency = scholarship;
-          } else if (item.label === 'Livelihood') {
+            break;
+          case 'Livelihood':
             agency = livelihood;
-          } else if (item.label === 'Housing') {
+            break;
+          case 'Housing':
             agency = houseing;
-          } else if (item.label === 'Financial') {
+            break;
+          case 'Financial':
             agency = financial;
-          } else if (item.label === 'Lingap') {
+            break;
+          case 'Lingap':
             agency = lingap;
-          } else if (item.label === 'Medical nga Tabang') {
+            break;
+          case 'Medical nga Tabang':
             agency = medicalngatabang;
-          } else if (item.label === 'Day Care Service') {
+            break;
+          case 'Day Care Service':
             agency = daycareservice;
-          } else if (item.label === 'Skill Training') {
+            break;
+          case 'Skill Training':
             agency = skilltraining;
-          } else if (item.label === 'Employment') {
+            break;
+          case 'Employment':
             agency = Employment;
-          } else {
+            break;
+          default:
             agency = 'TBD';
-          }
-          await setserbisyo(prev => [
-            ...prev,
-            {label: item.label, value: item.label},
-          ]);
-          await setserbisyosaver(prev => [
-            ...prev,
-            {programa: item.label, ahensya: agency},
-          ]);
+            break;
         }
+
+        setserbisyo(prev => [...prev, {label: item.label, value: item.label}]);
+        setserbisyosaver(prev => [
+          ...prev,
+          {programa: item.label, ahensya: agency},
+        ]);
       }
-      return () => {
-        mounted = false;
-      };
     },
-    [serbisyo],
+    [
+      serbisyo,
+      serbisyosaver,
+      scholarship,
+      livelihood,
+      houseing,
+      financial,
+      lingap,
+      medicalngatabang,
+      daycareservice,
+      skilltraining,
+      Employment,
+    ],
   );
-  console.log(serbisyosaver);
+
   const handleOccationfortheland = useCallback(value => {
     setOccationfortheland(value);
   });
@@ -700,95 +666,49 @@ const FADForm = ({navigation}) => {
   });
   const handlePeopleAdd = useCallback(async () => {
     setIsVisible(false);
-    let found = false;
 
-    // if (residents_data_exist !== []) {
-    //   ADDPeopleInsidetheHouse.map((item) => {
-    //     console.log(item.resident_pk === peopleid + '' + item.resident_pk);
-    //     if (item.resident_pk === peopleid) {
-    //       found = true;
-    //     }
-    //   });
-    //   if (!found) {
-    //     setADDPeopleInsidetheHouse((prev) => [
-    //       ...prev,
-    //       {
-    //         resident_pk: parseInt(peopleid),
-    //         PeopleName: residentname,
-    //         realationship: relationship,
-    //       },
-    //     ]);
-    //     setfam_member((prev) => [
-    //       ...prev,
-    //       {resident_pk: parseInt(peopleid), rel: relationship},
-    //     ]);
-    //   } else {
-    //     alert('Resident already exist in the list');
-    //   }
-    // } else {
     if (relationship === '') {
-      await setAlertshow(true);
-      await setAlertmessage('Please select relationship of the person');
-      await setAlerttitle('Try Again');
+      setAlertshow(true);
+      setAlertmessage('Please select the relationship of the person');
+      setAlerttitle('Try Again');
       wait(1000).then(() => {
         setAlertshow(false);
       });
-    } else {
-      PeopleInsidetheHouse.map(item => {
-        // console.log(item.resident_pk === peopleid + '' + item.resident_pk);
-        if (item.PeopleName === residentname) {
-          found = true;
-        }
-      });
-      if (!found) {
-        if (residents_data_exist?.data[0]?.fam_members === '') {
-          setPeopleInsidetheHouse(prev => [
-            ...prev,
-            {
-              resident_pk: parseInt(peopleid),
-              PeopleName: residentname,
-              realationship: relationship,
-            },
-          ]);
-          setfam_member(prev => [
-            ...prev,
-            {
-              PeopleName: residentname,
-              resident_pk: parseInt(peopleid),
-              rel: relationship,
-            },
-          ]);
-        } else {
-          setPeopleInsidetheHouse(prev => [
-            ...prev,
-            {
-              resident_pk: parseInt(peopleid),
-              PeopleName: residentname,
-              realationship: relationship,
-            },
-          ]);
-          setfam_member(prev => [
-            ...prev,
-            {
-              PeopleName: residentname,
-              resident_pk: parseInt(peopleid),
-              rel: relationship,
-            },
-          ]);
-        }
-      } else {
-        alert('Resident already exist in the list');
-      }
+      return; // Exit the function if the relationship is not selected
     }
-    // }
+
+    const personExists = PeopleInsidetheHouse.some(
+      item => item.PeopleName === residentname,
+    );
+
+    if (!personExists) {
+      const newPerson = {
+        resident_pk: parseInt(peopleid),
+        PeopleName: residentname,
+        realationship: relationship,
+      };
+
+      setPeopleInsidetheHouse(prev => [...prev, newPerson]);
+      setfam_member(prev => [
+        ...prev,
+        {
+          resident_pk: parseInt(peopleid),
+          rel: relationship,
+          PeopleName: residentname,
+        },
+      ]);
+    } else {
+      alert('Resident already exists in the list');
+    }
   }, [
     PeopleInsidetheHouse,
     fam_member_add,
     fam_member,
-    PeopleName,
-    parseInt(peopleid),
+    peopleid,
     relationship,
+    residentname,
   ]);
+
   const handleAddPeople = useCallback(async () => {
     await setIsVisible(true);
   });
@@ -806,120 +726,141 @@ const FADForm = ({navigation}) => {
     },
     [(fam_member, PeopleInsidetheHouse)],
   );
-  const onRefresh = useCallback(() => {
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
     setPeopleInsidetheHouse([]);
     setfam_member([]);
-    setRefreshing(false);
-    dispatch(action_get_FAD_exist(users_reducers?.resident_pk));
-    residents_data_exist?.data[0]?.fam_members?.map(item => {
-      setPeopleInsidetheHouse(prev => [
-        ...prev,
-        {
-          PeopleName: item?.first_name + ' ' + item?.last_name,
-          realationship: item?.rel,
-        },
-      ]);
-      setfam_member(prev => [
-        ...prev,
-        {
-          PeopleName: item?.first_name + ' ' + item?.last_name,
-          resident_pk: parseInt(item?.resident_pk),
-          rel: item?.rel,
-        },
-      ]);
-    });
-  }, [dispatch, users_reducers?.resident_pk, PeopleInsidetheHouse, fam_member]);
+
+    try {
+      await dispatch(action_get_FAD_exist(users_reducers?.resident_pk));
+
+      const famMembers = residents_data_exist?.data[0]?.fam_members || [];
+      const updatedPeopleInsideHouse = famMembers.map(item => ({
+        PeopleName: item?.first_name + ' ' + item?.last_name,
+        realationship: item?.rel,
+      }));
+
+      const updatedFamMembers = famMembers.map(item => ({
+        PeopleName: item?.first_name + ' ' + item?.last_name,
+        resident_pk: parseInt(item?.resident_pk),
+        rel: item?.rel,
+      }));
+
+      setPeopleInsidetheHouse(updatedPeopleInsideHouse);
+      setfam_member(updatedFamMembers);
+    } catch (error) {
+      // Handle any errors that occur during the dispatch or data processing.
+      console.error(error);
+    } finally {
+      setRefreshing(false);
+    }
+  }, [
+    dispatch,
+    residents_data_exist,
+    users_reducers?.resident_pk,
+    setPeopleInsidetheHouse,
+    setfam_member,
+  ]);
 
   useEffect(() => {
     let mounted = true;
 
     const listofresident = async () => {
+      dispatch(action_get_residents_list(searchvalue));
       if (mounted) {
         setspinner(true);
-        await setwaterconnection([]);
-        await setwaterconnectionsaver([]);
-
-        await sethasLightConnection([]);
-        await sethasLightConnectionsaver([]);
-
-        await sethasComfortRoom([]);
-        await sethasComfortRoomsaver([]);
-
-        await setwastemanagement([]);
-        await setwastemanagementsaver([]);
-
-        await setvictimofabuse([]);
-        await setvictimofabusesaver([]);
-
-        await setkahimtangsakomunidad([]);
-        await setkahimtangsakomunidadsaver([]);
-
-        await setserbisyo([]);
-        await setserbisyosaver([]);
-
-        await setCheckedWaterConnection({});
+        setwaterconnection([]);
+        setwaterconnectionsaver([]);
+        sethasLightConnection([]);
+        sethasLightConnectionsaver([]);
+        sethasComfortRoom([]);
+        sethasComfortRoomsaver([]);
+        setwastemanagement([]);
+        setwastemanagementsaver([]);
+        setvictimofabuse([]);
+        setvictimofabusesaver([]);
+        setkahimtangsakomunidad([]);
+        setkahimtangsakomunidadsaver([]);
+        setserbisyo([]);
+        setserbisyosaver([]);
+        setCheckedWaterConnection({});
 
         if (searchvalue === '') {
-          await setsearchvalue(null);
+          setsearchvalue(null);
         }
-        await setPeopleInsidetheHouse([]);
-        await dispatch(action_get_residents_list(searchvalue));
+
+        setPeopleInsidetheHouse([]);
 
         if (residents_data_exist?.data[0]?.kadugayon_pagpuyo === undefined) {
           setspinner(false);
           setisDisabled(false);
         } else {
-          await setisDisabled(true);
+          setisDisabled(true);
           setspinner(true);
-          if (residents_data_exist?.loading) {
-            await setOccationofthehouse(
-              residents_data_exist?.data[0].okasyon_balay,
-            );
-            await setOccationfortheland(
-              residents_data_exist?.data[0].okasyon_yuta,
-            );
-            await setStructure(residents_data_exist?.data[0].straktura);
-            await setQualityness(residents_data_exist?.data[0].kaligon_balay);
-            await setyearsstayed(
-              '' + residents_data_exist?.data[0].kadugayon_pagpuyo,
-            );
 
-            await resident_form?.data?.tinubdan_tubig?.map(item => {
-              // const isChecked = checkedwaterconnection[item];
-              // setCheckedWaterConnection({...checkedwaterconnection,[item] :!isChecked})
-              setwaterconnection(prev => [...prev, {label: item, value: item}]);
-              setwaterconnectionsaver(prev => [...prev, item]);
-            });
-            resident_form?.data?.pasilidad_kuryente?.map(item => {
-              sethasLightConnection(prev => [
-                ...prev,
-                {label: item, value: item},
-              ]);
-              sethasLightConnectionsaver(prev => [...prev, item]);
-            });
-            resident_form?.data?.matang_kasilyas?.map(item => {
-              sethasComfortRoom(prev => [...prev, {label: item, value: item}]);
-              sethasComfortRoomsaver(prev => [...prev, item]);
-            });
-            resident_form?.data?.matang_basura?.map(item => {
-              setwastemanagement(prev => [...prev, {label: item, value: item}]);
-              setwastemanagementsaver(prev => [...prev, item]);
-            });
-            resident_form?.data?.biktima_pangabuso?.map(item => {
-              setvictimofabuse(prev => [...prev, {label: item, value: item}]);
-              setvictimofabusesaver(prev => [...prev, item]);
-            });
+          const residentFormData = resident_form?.data;
 
-            resident_form?.data?.kahimtanang_komunidad?.map(item => {
-              setkahimtangsakomunidad(prev => [
-                ...prev,
-                {label: item, value: item},
-              ]);
-              setkahimtangsakomunidadsaver(prev => [...prev, item]);
-            });
+          const {
+            tinubdan_tubig,
+            pasilidad_kuryente,
+            matang_kasilyas,
+            matang_basura,
+            biktima_pangabuso,
+            kahimtanang_komunidad,
+            serbisyo_nadawat,
+          } = residentFormData;
 
-            resident_form?.data?.serbisyo_nadawat?.map(item => {
+          if (residentFormData) {
+            // Function to update state and saver
+            const updateFieldData = (field, setFunc, setSaverFunc) => {
+              if (field) {
+                field.forEach(item => {
+                  setFunc(prev => [
+                    ...prev,
+                    {label: item, value: item},
+                    item, // Append the item directly to the saver array
+                  ]);
+                });
+              }
+            };
+
+            setOccationofthehouse(residents_data_exist.data[0].okasyon_balay);
+            setOccationfortheland(residents_data_exist.data[0].okasyon_yuta);
+            setStructure(residents_data_exist.data[0].straktura);
+            setQualityness(residents_data_exist.data[0].kaligon_balay);
+            setyearsstayed('' + residents_data_exist.data[0].kadugayon_pagpuyo);
+
+            updateFieldData(
+              tinubdan_tubig,
+              setwaterconnection,
+              setwaterconnectionsaver,
+            );
+            updateFieldData(
+              pasilidad_kuryente,
+              sethasLightConnection,
+              sethasLightConnectionsaver,
+            );
+            updateFieldData(
+              matang_kasilyas,
+              sethasComfortRoom,
+              sethasComfortRoomsaver,
+            );
+            updateFieldData(
+              matang_basura,
+              setwastemanagement,
+              setwastemanagementsaver,
+            );
+            updateFieldData(
+              biktima_pangabuso,
+              setvictimofabuse,
+              setvictimofabusesaver,
+            );
+            updateFieldData(
+              kahimtanang_komunidad,
+              setkahimtangsakomunidad,
+              setkahimtangsakomunidadsaver,
+            );
+            serbisyo_nadawat.forEach(item => {
               let agency = '';
               if (item.programa === 'Scholarship') {
                 setscholarship(item.ahensya);
@@ -949,51 +890,38 @@ const FADForm = ({navigation}) => {
                 {programa: item.programa, ahensya: item.ahensya},
               ]);
             });
-
-            // await sethasLightConnection(
-            //   residents_data_exist?.data[0]?.pasilidad_kuryente,
-            // );
-            // await sethasComfortRoom(
-            //   residents_data_exist?.data[0]?.matang_kasilyas,
-            // );
-            // await setwastemanagement(
-            //   residents_data_exist?.data[0]?.matang_basura,
-            // );
-            // await setvictimofabuse(
-            //   residents_data_exist?.data[0]?.biktima_pangabuso,
-            // );
-            // await setkahimtangsakomunidad(
-            //   residents_data_exist?.data[0]?.kahimtang_komunidad,
-            // );
-
-            await setspinner(false);
-            await residents_data_exist?.data[0]?.fam_members?.map(item => {
-              setPeopleInsidetheHouse(prev => [
-                ...prev,
-                {
-                  PeopleName: item?.first_name + ' ' + item?.last_name,
-                  realationship: item?.rel,
-                },
-              ]);
-              setfam_member(prev => [
-                ...prev,
-                {
-                  PeopleName: item?.first_name + ' ' + item?.last_name,
-                  resident_pk: parseInt(item?.resident_pk),
-                  rel: item?.rel,
-                },
-              ]);
-            });
-            setspinner(false);
           }
+
+          setspinner(false);
+
+          if (residents_data_exist.data[0]?.fam_members) {
+            const updatedPeopleInsideTheHouse =
+              residents_data_exist.data[0]?.fam_members.map(item => ({
+                PeopleName: `${item?.first_name} ${item?.last_name}`,
+                realationship: item?.rel,
+              }));
+
+            const updatedFamMember =
+              residents_data_exist.data[0]?.fam_members.map(item => ({
+                PeopleName: `${item?.first_name} ${item?.last_name}`,
+                resident_pk: parseInt(item?.resident_pk),
+                rel: item?.rel,
+              }));
+
+            setPeopleInsidetheHouse(updatedPeopleInsideTheHouse);
+            setfam_member(updatedFamMember);
+          }
+          setspinner(false);
         }
       }
     };
+
     mounted && listofresident();
+
     return () => {
       mounted = false;
     };
-  }, [dispatch]);
+  }, [dispatch, searchvalue, residents_data_exist, resident_form]);
 
   const onSwipe = useCallback((gestureName, gestureState) => {
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;
@@ -1018,7 +946,6 @@ const FADForm = ({navigation}) => {
     velocityThreshold: 0.5,
     directionalOffsetThreshold: 80,
   };
-  console.log(residents_list);
   return (
     // <ImageBackground
     // style={{flex: 1}}
@@ -1528,13 +1455,7 @@ const FADForm = ({navigation}) => {
                             handlePeopleLivingInsideTheHouse(item);
                           }}>
                           <View style={styles.touchablecontainer}>
-                            <Card
-                              style={{
-                                marginTop: -5,
-                                height: screenHeight - 720,
-                                width: '100%',
-                              }}
-                              radius={1}>
+                            <Card>
                               <View
                                 style={{
                                   flex: 1,
@@ -1543,9 +1464,9 @@ const FADForm = ({navigation}) => {
                                 }}>
                                 <View
                                   style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
                                     width: '100%',
-                                    height: 200,
-                                    padding: 20,
                                   }}>
                                   <Text
                                     numberOfLines={1}
@@ -1573,10 +1494,11 @@ const FADForm = ({navigation}) => {
                     }}>
                     <CustomBottomSheet
                       isVisible={isVisible}
-                      color="rgba(0.5, 0.25, 0, 0.5)"
+                      color="white"
                       UI={
                         <View style={{padding: 10, height: screenHeight}}>
-                          <View style={{marginBottom: 50, padding: 10}}>
+                          <View
+                            style={{marginBottom: 50, padding: 10, gap: 15}}>
                             {/* // items={residents_list?.map((item, index) => [
                             //   {
                             //     label: item?.first_name,
@@ -1587,7 +1509,7 @@ const FADForm = ({navigation}) => {
                               icon
                               clearIcon={true}
                               placeholder="Search Person"
-                              onChangeText={onChangeSearch}
+                              onChangeText={e => onChangeSearch(e)}
                               defaultValue={null}
                               value={searchvalue}
                             />
@@ -1627,10 +1549,10 @@ const FADForm = ({navigation}) => {
                             </ScrollView>
 
                             <Text
-                              styles={{
+                              style={{
                                 textAlign: 'center',
                                 fontWeight: 'bold',
-                                fontSize: 14,
+                                fontSize: 16,
                                 padding: 5,
                               }}>
                               Selected Person: {residentname}
@@ -1686,7 +1608,15 @@ const FADForm = ({navigation}) => {
                               console.log(text);
                             }}
                           /> */}
-
+                            <Text
+                              style={{
+                                textAlign: 'justify',
+                                fontWeight: 'bold',
+                                fontSize: 14,
+                                paddingTop: 15,
+                              }}>
+                              Relasyon
+                            </Text>
                             <Picker
                               selectedValue={relationship}
                               style={styles.PickerContainer}

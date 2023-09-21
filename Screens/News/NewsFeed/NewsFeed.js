@@ -59,7 +59,9 @@ const NewsFeed = () => {
   const dispatch = useDispatch();
   const handleSelectedMonth = useCallback(
     async (value, index) => {
-      dispatch(action_filter_news(value, index, value));
+      dispatch(action_filter_news(value, index, value)).then(res => {
+        setRefreshing(false);
+      });
       // dispatch(action_get_news_bymonth(value));
     },
     [dispatch],

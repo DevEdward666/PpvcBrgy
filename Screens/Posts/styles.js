@@ -3,7 +3,6 @@ const styles = StyleSheet.create({
   avatar: {
     width: '100%',
     height: 500,
-    borderColor: 'white',
     alignSelf: 'center',
     resizeMode: 'contain',
   },

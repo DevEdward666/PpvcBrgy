@@ -30,7 +30,6 @@ export const action_get_residents_list = searchname => async dispatch => {
   });
 
   const parseData = await fetchdata.json();
-  console.log(parseData);
   if (parseData.status != 400) {
     if (parseData.success != false) {
       dispatch({
@@ -190,7 +189,6 @@ export const action_addfamily =
     fam_member,
   ) =>
   async dispatch => {
-    console.log(parseInt(kadugayon_pagpuyo));
     //   var url = `${BASE_URL}/api/user/currentUser`;
     var url = `${BASE_URL}/api/family/addFamily`;
     const token = await AsyncStorage.getItem('tokenizer');

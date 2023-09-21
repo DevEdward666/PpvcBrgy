@@ -147,16 +147,13 @@ const MeScreen = () => {
     ) {
       navigation.navigate('Family Assesment Data Form');
       //Actions.fad();
-    } else if (
-      users_reducers?.new_user === 'false' &&
-      users_reducers?.ulo_pamilya === null
-    ) {
+    } else {
       Alert.alert(
         'Famaily Assesment Data',
         'Your are not the head of the family',
       );
     }
-  }, [users_reducers?.new_user, users_reducers?.ulo_pamilya]);
+  }, [users_reducers]);
   const gotosettings = useCallback(() => {
     navigation.navigate('Settings');
     //Actions.settings();

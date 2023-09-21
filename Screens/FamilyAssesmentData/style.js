@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   PickerContainer: {
     flex: 1,
     width: '100%',
-    padding: 30,
+    marginBottom: '50px',
     height: 70,
     color: '#623256',
   },

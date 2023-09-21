@@ -111,13 +111,13 @@ const Posts = () => {
   });
   const handleSubmitPostPress = useCallback(async () => {
     if (post.length > 0) {
-      await dispatch(action_set_posts(post, post, multipleFile));
+      dispatch(action_set_posts(post, post, multipleFile));
 
-      await setaddpostVisible(false);
-      await dispatch(action_get_posts(offset));
-      await setpost('');
-      await setmultipleFile([]);
-      await setpostResource([]);
+      setaddpostVisible(false);
+      dispatch(action_get_posts(offset));
+      setpost('');
+      setmultipleFile([]);
+      setpostResource([]);
     }
   }, [dispatch, post, multipleFile, offset]);
   const handleCommentSend = useCallback(async () => {
@@ -130,7 +130,7 @@ const Posts = () => {
   }, [dispatch, comment, posts_id]);
   const handleChangeTextPost = useCallback(
     async text => {
-      await setpost(text);
+      setpost(text);
     },
     [dispatch, post],
   );
@@ -138,7 +138,6 @@ const Posts = () => {
   const backAction = () => {
     setisVisible(false);
     setaddpostVisible(false);
-    console.log('backing');
     return true;
   };
   const loadmore = useCallback(async () => {
@@ -206,25 +205,22 @@ const Posts = () => {
     directionalOffsetThreshold: 1000,
   };
   const selectFile = async () => {
-    // Opening Document Picker to select one file
     try {
-      const results = await DocumentPicker.pickMultiple({
+      const results = await DocumentPicker.pick({
         type: [DocumentPicker.types.images],
+        allowMultiSelection: true,
       });
-      for (const res of results) {
-        setpostResource(prev => [...prev, {uri: res.uri}]);
-        setmultipleFile(prev => [...prev, res]);
-      }
 
-      // Setting the state to show single file attributes
+      const newFiles = results.map(res => ({uri: res.uri}));
+      console.log(newFiles);
+      setpostResource(prev => [...prev, ...newFiles]);
+      // setmultipleFile(prev => [...prev, ...results]);
     } catch (err) {
       setmultipleFile(null);
-      // Handling any exception (If any)
+
       if (DocumentPicker.isCancel(err)) {
-        // If user canceled the document selection
         alert('Canceled');
       } else {
-        // For Unknown Error
         alert('Unknown Error: ' + JSON.stringify(err));
         throw err;
       }
@@ -309,12 +305,12 @@ const Posts = () => {
                   flex: 1,
                   flexDirection: 'row',
                   justifyContent: 'space-around',
-                  marginBottom: 50,
+                  alignItems: 'center',
                 }}>
-                <View style={{width: 50 + '%', height: 30}}>
-                  <Text style={styles.fullnametext}>Create Post</Text>
+                <View style={{width: '50%', height: '100%'}}>
+                  <Text style={styles.createPost}>Create Post</Text>
                 </View>
-                <View style={{width: 40 + '%', height: 30}}>
+                <View style={{width: '30%', height: '100%'}}>
                   <Button
                     title="Post"
                     type="outline"
@@ -327,6 +323,8 @@ const Posts = () => {
                   flex: 1,
                   flexDirection: 'column',
                   justifyContent: 'space-around',
+                  alignItems: 'center',
+                  padding: 10,
                   marginBottom: 50,
                 }}>
                 <View
@@ -334,8 +332,8 @@ const Posts = () => {
                     width: '100%',
                     height: 50,
                     marginTop: 10,
-                    marginStart: 5,
-                    marginBottom: 5,
+                    marginStart: 25,
+                    marginBottom: 15,
                   }}>
                   <View
                     style={{
@@ -361,7 +359,7 @@ const Posts = () => {
                       />
                     </View>
                     <View
-                      style={{width: screenWidth - 20, height: screenHeight}}>
+                      style={{width: screenWidth - 50, height: screenHeight}}>
                       <Text style={styles.fullnametext}>
                         {users_reducers.full_name}
                       </Text>
@@ -372,9 +370,9 @@ const Posts = () => {
                   <TextInput
                     style={{
                       borderWidth: 2,
-                      borderColor: '#f7f5f5',
+                      borderColor: '#cdced1',
                       padding: 20,
-                      fontSize: 32,
+                      fontSize: 16,
                     }}
                     multiline
                     placeholder="What's on your mind"
@@ -551,7 +549,7 @@ const Posts = () => {
                   </Text>
                 </>
               )}
-              <Card>
+              <View>
                 <View
                   style={{
                     flexDirection: 'row',
@@ -586,7 +584,7 @@ const Posts = () => {
                   <View
                     style={{
                       alignItems: 'stretch',
-                      width: screenWidth - 270,
+                      width: screenWidth,
                     }}>
                     <View style={{width: '100%'}}>
                       {item?.totalcomments.map((comments, index) => {
@@ -617,7 +615,7 @@ const Posts = () => {
                 <ScrollView>
                   {item.comments.map(comments => {
                     return (
-                      <Card key={comments.posts_comment_pk}>
+                      <View key={comments.posts_comment_pk}>
                         <View style={styles.containercomment}>
                           <View style={styles.contentNOTIFICATION}>
                             <View
@@ -644,7 +642,7 @@ const Posts = () => {
                                   }}
                                 />
                               </View>
-                              <View style={{width: 95 + '%', height: 100}}>
+                              <View style={{width: 100 + '%', height: 100}}>
                                 <Text style={styles.containerNOTIFICATION}>
                                   {comments?.fullname}
                                   {'\n'}
@@ -657,11 +655,11 @@ const Posts = () => {
                             </View>
                           </View>
                         </View>
-                      </Card>
+                      </View>
                     );
                   })}
                 </ScrollView>
-              </Card>
+              </View>
             </Card>
           </TouchableHighlight>
         )}

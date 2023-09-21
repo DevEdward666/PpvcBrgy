@@ -42,8 +42,6 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
   },
   containercomment: {
-    paddingLeft: 19,
-    paddingRight: 16,
     paddingVertical: 12,
     flexDirection: 'row',
     height: 100,
@@ -62,15 +60,20 @@ const styles = StyleSheet.create({
     padding: 15,
     textAlign: 'justify',
   },
+  createPost: {
+    color: 'black',
+    fontSize: 24,
+    padding: 10,
+    textAlign: 'justify',
+  },
   fullnametext: {
     color: 'black',
-    fontSize: 23,
+    fontSize: 20,
     padding: 10,
     textAlign: 'justify',
   },
   flatlistcontainer: {
     backgroundColor: 'rgba(255,255,355,0.5)',
-    borderColor: 'rgba(255,255,355,0.5)',
     flex: 1,
     paddingTop: 10,
   },

@@ -83,7 +83,6 @@ const UILiked = ({item}) => {
           width: '100%',
           overflow: 'hidden',
           height: '100%',
-          borderColor: '',
         }}>
         <Text style={{textAlign: 'center', color: 'white', marginTop: 5}}>
           <Icons name="thumbs-up" size={15} color="white" /> Like
@@ -171,7 +170,7 @@ const UILiked = ({item}) => {
               <ScrollView>
                 {posts_comments.map(Notification => {
                   return (
-                    <Card key={Notification.posts_comment_pk}>
+                    <View key={Notification.posts_comment_pk}>
                       <View style={styles.containercomment}>
                         <View style={styles.contentNOTIFICATION}>
                           <View
@@ -192,30 +191,28 @@ const UILiked = ({item}) => {
                                   marginStart: 10,
                                   width: 40,
                                   height: 40,
-                                  borderRadius: 120 / 2,
                                   overflow: 'hidden',
-                                  borderWidth: 3,
+                                  borderRadius: 120 / 2,
                                 }}
                               />
                             </View>
-                            <View style={{width: 95 + '%', height: 100}}>
-                              <Card key={Notification.posts_comment_pk}>
+                            <View style={{width: 100 + '%', height: 100}}>
+                              <View key={Notification.posts_comment_pk}>
                                 <Text style={styles.containerNOTIFICATION}>
-                                  {Notification?.fullname}
-                                  {'\n'}
+                                  {Notification?.fullname}:{'\n'}
                                   {Notification?.body}
                                 </Text>
-                              </Card>
+                              </View>
                             </View>
                           </View>
                         </View>
                       </View>
-                    </Card>
+                    </View>
                   );
                 })}
               </ScrollView>
 
-              <Card>
+              <View>
                 <View style={styles.containerNOTIFICATION}>
                   <View style={styles.contentNOTIFICATION}>
                     <Text style={styles.nameNOTIFICATION}>Comment</Text>
@@ -246,7 +243,7 @@ const UILiked = ({item}) => {
                     </View>
                   </View>
                 </View>
-              </Card>
+              </View>
             </View>
           }
         />

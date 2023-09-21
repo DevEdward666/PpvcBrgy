@@ -1,17 +1,20 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {useDispatch, useSelector} from 'react-redux';
 import {action_get_posts} from '../../../Services/Actions/PostsActions';
 import Posts from './Posts';
 import styles from './style';
 function PostsMain(props) {
-  const posts_reducers = useSelector((state) => state.PostsReducers.posts_data);
+  const posts_reducers = useSelector(state => state.PostsReducers.posts_data);
   const dispatch = useDispatch();
+  const [isLoaded, setIsLoaded] = useState(false);
   useEffect(() => {
     let mounted = true;
     const getposts = async () => {
       if (mounted) {
-        dispatch(action_get_posts(5));
+        dispatch(action_get_posts(5)).then(() => {
+          setIsLoaded(true);
+        });
       }
     };
     mounted && getposts();
@@ -21,7 +24,7 @@ function PostsMain(props) {
   }, [dispatch]);
   return (
     <>
-      {posts_reducers.data.length <= 0 ? (
+      {!isLoaded ? (
         <Spinner
           visible={true}
           textContent={'Loading...'}

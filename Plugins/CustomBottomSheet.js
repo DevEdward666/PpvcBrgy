@@ -1,5 +1,6 @@
 import React from 'react';
-import { BottomSheet } from 'react-native-elements';
+import {BottomSheet} from 'react-native-elements';
+import {View} from 'react-native';
 import {Card} from 'react-native-elements/dist/card/Card';
 const CustomBottomSheet = ({isVisible, color, UI, Footer}) => {
   //  const  onSwipeUp = useCallback((gestureState) {
@@ -22,9 +23,9 @@ const CustomBottomSheet = ({isVisible, color, UI, Footer}) => {
     <BottomSheet
       isVisible={isVisible}
       containerStyle={{backgroundColor: color}}>
-      <Card>{UI}</Card>
+      <View>{UI}</View>
 
-      <Card>{Footer}</Card>
+      <View>{Footer}</View>
     </BottomSheet>
   );
 };
