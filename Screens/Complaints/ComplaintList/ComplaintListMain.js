@@ -5,17 +5,18 @@ import {action_get_complaints} from '../../../Services/Actions/ComplaintsActions
 import Complaints from './Complaints';
 
 function ComplaintListMain(props) {
-  const users_reducers = useSelector((state) => state.UserInfoReducers.data);
-  const complaintslist = useSelector((state) => state.ComplaintsReducers.data);
+  const users_reducers = useSelector(state => state.UserInfoReducers.data);
+  const complaintslist = useSelector(state => state.ComplaintsReducers.data);
   const [spinner, setSpinner] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     let mounted = true;
     const getcomplaints = async () => {
       if (mounted) {
-        await setSpinner(true);
-        dispatch(action_get_complaints(users_reducers?.user_pk));
-        await setSpinner(false);
+        setSpinner(true);
+        dispatch(action_get_complaints(users_reducers?.user_pk)).then(() => {
+          setSpinner(false);
+        });
       }
     };
     mounted && getcomplaints();
@@ -25,9 +26,7 @@ function ComplaintListMain(props) {
   }, [dispatch, users_reducers]);
   return (
     <>
-      {complaintslist?.length <= 0 ? (
-        <Spinner visible={true} textContent={'Fetching Data...'} />
-      ) : null}
+      <Spinner visible={spinner} textContent={'Fetching Data...'} />
 
       <Complaints />
     </>

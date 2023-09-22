@@ -13,10 +13,13 @@ import {
   TouchableNativeFeedback,
   BackHandler,
   Text,
+  ScrollView,
+  Modal,
 } from 'react-native';
+
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import DocumentPicker from 'react-native-document-picker';
-import Icons from 'react-native-vector-icons/FontAwesome';
+import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {
   Button,
   ButtonGroup,
@@ -44,7 +47,7 @@ import {
   action_set_posts_pk,
 } from '../../../Services/Actions/PostsActions';
 import CustomBottomSheet from '../../../Plugins/CustomBottomSheet';
-import {ScrollView, TextInput} from 'react-native-gesture-handler';
+import {TextInput} from 'react-native-gesture-handler';
 import CustomFlexBox from '../../../Plugins/CustomFlexBox';
 import {HelperText} from 'react-native-paper';
 import CustomBottomSheetV2 from '../../../Plugins/CustomBottomSheetV2';
@@ -86,11 +89,11 @@ const Posts = () => {
   });
   // const news_reducers_url = useSelector((state) => state.News_Reducers.url);
   const onRefresh = useCallback(async () => {
-    await setRefreshing(true);
-    await setoffset(prev => prev + 2);
-    wait(1000).then(() => {
+    setRefreshing(true);
+    setoffset(prev => prev + 2);
+
+    dispatch(action_get_posts(offset)).then(() => {
       setRefreshing(false);
-      dispatch(action_get_posts(offset));
     });
   }, [dispatch]);
   const gotopostsinfo = useCallback(
@@ -143,8 +146,7 @@ const Posts = () => {
   const loadmore = useCallback(async () => {
     let mounted = true;
     if (mounted) {
-      await setoffset(prev => prev + 5);
-      await setRefreshing(true);
+      setoffset(prev => prev + 5);
     }
     return () => {
       mounted = false;
@@ -212,9 +214,8 @@ const Posts = () => {
       });
 
       const newFiles = results.map(res => ({uri: res.uri}));
-      console.log(newFiles);
       setpostResource(prev => [...prev, ...newFiles]);
-      // setmultipleFile(prev => [...prev, ...results]);
+      setmultipleFile(prev => [...prev, ...results]);
     } catch (err) {
       setmultipleFile(null);
 
@@ -231,7 +232,7 @@ const Posts = () => {
   let imageUri = 'data:image/png;base64,' + users_reducers?.pic;
   return (
     <SafeAreaView style={styles.flatlistcontainer}>
-      <Card style={{marginTop: -5, marginBottom: 30, height: 80}} radius={1}>
+      <View style={{marginTop: -5, marginBottom: 30, height: 80}} radius={1}>
         <View
           style={{
             flexDirection: 'row',
@@ -283,176 +284,169 @@ const Posts = () => {
             </View>
           </View>
         </View>
-      </Card>
+      </View>
 
-      <CustomBottomSheet
-        isVisible={addpostVisible}
-        color="white"
-        UI={
-          <GestureRecognizer
-            onSwipe={(direction, state) => onSwipeAddPost(direction, state)}
-            config={config}>
-            <SafeAreaView>
-              <View style={styles.containerclose}>
-                <TouchableHighlight
-                  onPress={() => setaddpostVisible(false)}
-                  underlayColor={'white'}>
-                  <Icons size={25} name={'close'} />
-                </TouchableHighlight>
-              </View>
+      <Modal
+        visible={addpostVisible}
+        style={{margin: 0, justifyContent: 'flex-end'}}>
+        {/* <GestureRecognizer
+          onSwipe={(direction, state) => onSwipeAddPost(direction, state)}
+          config={config}> */}
+        <SafeAreaView>
+          <View style={styles.containerclose}>
+            <TouchableHighlight
+              onPress={() => setaddpostVisible(false)}
+              underlayColor={'white'}>
+              <Icons size={25} name={'close'} />
+            </TouchableHighlight>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+            }}>
+            <View style={{width: '50%', height: '100%'}}>
+              <Text style={styles.createPost}>Create Post</Text>
+            </View>
+            <View style={{width: '30%', height: '100%'}}>
+              <Button
+                title="Post"
+                type="outline"
+                onPress={() => handleSubmitPostPress()}
+              />
+            </View>
+          </View>
+          <View
+            style={{
+              flexDirection: 'column',
+              justifyContent: 'space-around',
+              alignItems: 'center',
+              padding: 10,
+              marginBottom: 50,
+            }}>
+            <View
+              style={{
+                width: '100%',
+                height: 50,
+                marginTop: 10,
+                marginStart: 25,
+                marginBottom: 15,
+              }}>
               <View
                 style={{
-                  flex: 1,
                   flexDirection: 'row',
                   justifyContent: 'space-around',
-                  alignItems: 'center',
+                  marginBottom: 50,
                 }}>
-                <View style={{width: '50%', height: '100%'}}>
-                  <Text style={styles.createPost}>Create Post</Text>
-                </View>
-                <View style={{width: '30%', height: '100%'}}>
-                  <Button
-                    title="Post"
-                    type="outline"
-                    onPress={() => handleSubmitPostPress()}
+                <View style={{width: 20 + '%', height: 30}}>
+                  <Image
+                    source={{
+                      uri: imageUri,
+                    }}
+                    style={{
+                      marginTop: 10,
+                      marginStart: 10,
+                      width: 40,
+                      height: 40,
+                      borderRadius: 120 / 2,
+                      overflow: 'hidden',
+                      borderWidth: 3,
+                    }}
                   />
                 </View>
+                <View style={{width: screenWidth - 50, height: screenHeight}}>
+                  <Text style={styles.fullnametext}>
+                    {users_reducers.full_name}
+                  </Text>
+                </View>
+              </View>
+            </View>
+            <View style={{width: '100%', height: 620, maxHeight: 5000}}>
+              <TextInput
+                style={{
+                  borderWidth: 2,
+                  borderColor: '#cdced1',
+                  padding: 20,
+                  fontSize: 16,
+                }}
+                multiline
+                placeholder="What's on your mind"
+                numberOfLines={4}
+                onChangeText={text => handleChangeTextPost(text)}
+                value={post}
+              />
+              <View style={{width: '50%', height: 50, padding: 5}}>
+                <Button
+                  style={{color: 'black'}}
+                  icon={<Icons name="image-album" size={15} color="green" />}
+                  iconLeft
+                  type="outline"
+                  title=" Photo"
+                  onPress={selectFile}
+                />
               </View>
               <View
                 style={{
-                  flex: 1,
                   flexDirection: 'column',
-                  justifyContent: 'space-around',
-                  alignItems: 'center',
-                  padding: 10,
-                  marginBottom: 50,
+                  justifyContent: 'flex-start',
+
+                  width: screenWidth,
+                  height: screenHeight,
                 }}>
+                <HelperText
+                  type="info"
+                  visible={true}
+                  padding="none"
+                  style={{overflow: 'visible'}}>
+                  Long press image to remove & swipe left right to show other
+                  image
+                </HelperText>
                 <View
                   style={{
-                    width: '100%',
-                    height: 50,
-                    marginTop: 10,
-                    marginStart: 25,
-                    marginBottom: 15,
+                    backgroundColor: 'white',
+                    borderTopLeftRadius: 10,
+                    borderTopRightRadius: 10,
                   }}>
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: 'row',
-                      justifyContent: 'space-around',
-                      marginBottom: 50,
-                    }}>
-                    <View style={{width: 20 + '%', height: 30}}>
-                      <Image
-                        source={{
-                          uri: imageUri,
-                        }}
+                  <FlatList
+                    data={postResource}
+                    keyExtractor={(item, index) => index.toString()}
+                    onEndReached={loadmore}
+                    onEndReachedThreshold={0.1}
+                    contentContainerStyle={{paddingBottom: 400}}
+                    renderItem={({item, index}) => (
+                      <View
                         style={{
-                          marginTop: 10,
-                          marginStart: 10,
-                          width: 40,
-                          height: 40,
-                          borderRadius: 120 / 2,
-                          overflow: 'hidden',
-                          borderWidth: 3,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignSelf: 'center',
+                          marginBottom: screenHeight - 800,
                         }}
-                      />
-                    </View>
-                    <View
-                      style={{width: screenWidth - 50, height: screenHeight}}>
-                      <Text style={styles.fullnametext}>
-                        {users_reducers.full_name}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-                <View style={{width: '100%', height: 620, maxHeight: 5000}}>
-                  <TextInput
-                    style={{
-                      borderWidth: 2,
-                      borderColor: '#cdced1',
-                      padding: 20,
-                      fontSize: 16,
-                    }}
-                    multiline
-                    placeholder="What's on your mind"
-                    numberOfLines={4}
-                    onChangeText={text => handleChangeTextPost(text)}
-                    value={post}
-                  />
-                  <View style={{width: '50%', height: 50, padding: 5}}>
-                    <Button
-                      style={{color: 'black'}}
-                      icon={
-                        <Icons name="file-image-o" size={15} color="green" />
-                      }
-                      iconLeft
-                      type="outline"
-                      title=" Photo"
-                      onPress={selectFile}
-                    />
-                  </View>
-                  <View
-                    style={{
-                      flexDirection: 'column',
-                      justifyContent: 'flex-start',
-                    }}>
-                    <View
-                      style={{
-                        width: screenWidth,
-                        height: screenHeight,
-                      }}>
-                      <HelperText
-                        type="info"
-                        visible={true}
-                        padding="none"
-                        style={{overflow: 'visible'}}>
-                        Long press image to remove & swipe left right to show
-                        other image
-                      </HelperText>
-                      <ScrollView horizontal={true}>
-                        {postResource.map((item, index) => (
+                        key={index}>
+                        <TouchableNativeFeedback
+                          onLongPress={() => handleRemoveItem(item, index)}
+                          underlayColor="white">
                           <View
-                            style={{
-                              flex: 1,
-                              width: screenWidth,
-                              height: screenHeight,
-                              marginTop: screenHeight - 1000,
-                              justifyContent: 'center',
-                            }}
-                            key={index}>
-                            <TouchableNativeFeedback
-                              onLongPress={() => handleRemoveItem(item, index)}
-                              underlayColor="white">
-                              <Card
-                                style={styles.avatar}
-                                radius={1}
-                                backgroundColor={'#ffffff'}>
-                                <View
-                                  style={{
-                                    flexDirection: 'row',
-                                    maxHeight: 500,
-                                    alignItems: 'center',
-                                  }}>
-                                  <ImageBackground
-                                    source={{
-                                      uri: item.uri,
-                                    }}
-                                    style={styles.avatar}></ImageBackground>
-                                </View>
-                              </Card>
-                            </TouchableNativeFeedback>
+                            style={styles.avatar}
+                            radius={1}
+                            backgroundColor={'#ffffff'}>
+                            <ImageBackground
+                              source={{
+                                uri: item.uri,
+                              }}
+                              style={styles.avatar}></ImageBackground>
                           </View>
-                        ))}
-                      </ScrollView>
-                    </View>
-                  </View>
+                        </TouchableNativeFeedback>
+                      </View>
+                    )}
+                  />
                 </View>
               </View>
-            </SafeAreaView>
-          </GestureRecognizer>
-        }
-      />
+            </View>
+          </View>
+        </SafeAreaView>
+        {/* </GestureRecognizer> */}
+      </Modal>
 
       <FlatList
         refreshControl={
@@ -467,7 +461,14 @@ const Posts = () => {
           <TouchableHighlight
             onPress={() => gotopostsinfo(item)}
             underlayColor="white">
-            <Card style={{marginTop: 10, marginBottom: 20}} radius={1}>
+            <View
+              style={{
+                marginTop: 10,
+                marginBottom: 20,
+                padding: 20,
+                backgroundColor: 'white',
+              }}
+              radius={1}>
               <View
                 style={{
                   flexDirection: 'row',
@@ -567,10 +568,10 @@ const Posts = () => {
                         marginBottom: -20,
                         marginStart: 20,
                       }}>
-                      <Icons name="thumbs-up" size={15} color="grey" />
+                      <Icons name="thumb-up" size={15} color="grey" />
                     </View>
                     <View style={{width: 80}}>
-                      {item?.reActions?.map((likes, index) => {
+                      {item?.reactions?.map((likes, index) => {
                         return (
                           <Badge
                             status="primary"
@@ -584,7 +585,7 @@ const Posts = () => {
                   <View
                     style={{
                       alignItems: 'stretch',
-                      width: screenWidth,
+                      width: screenWidth - 1000,
                     }}>
                     <View style={{width: '100%'}}>
                       {item?.totalcomments.map((comments, index) => {
@@ -615,7 +616,7 @@ const Posts = () => {
                 <ScrollView>
                   {item.comments.map(comments => {
                     return (
-                      <View key={comments.posts_comment_pk}>
+                      <Card key={comments.posts_comment_pk}>
                         <View style={styles.containercomment}>
                           <View style={styles.contentNOTIFICATION}>
                             <View
@@ -655,12 +656,12 @@ const Posts = () => {
                             </View>
                           </View>
                         </View>
-                      </View>
+                      </Card>
                     );
                   })}
                 </ScrollView>
               </View>
-            </Card>
+            </View>
           </TouchableHighlight>
         )}
       />

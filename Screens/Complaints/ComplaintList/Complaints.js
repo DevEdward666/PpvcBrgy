@@ -3,6 +3,7 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {
   FlatList,
   ImageBackground,
+  Modal,
   PermissionsAndroid,
   RefreshControl,
   SafeAreaView,
@@ -10,10 +11,11 @@ import {
   TouchableHighlight,
   TouchableNativeFeedback,
   View,
+  ScrollView,
 } from 'react-native';
 import DocumentPicker from 'react-native-document-picker';
 import {Button, Divider, Icon, Input, Card} from 'react-native-elements';
-import {ScrollView} from 'react-native-gesture-handler';
+
 import {FAB} from 'react-native-paper';
 import {useNavigation} from '@react-navigation/native';
 //import Card from 'react-native-rn-Card';
@@ -149,8 +151,9 @@ const Complaints = () => {
   const selectFile = async () => {
     // Opening Document Picker to select one file
     try {
-      const results = await DocumentPicker.pickMultiple({
+      const results = await DocumentPicker.pick({
         type: [DocumentPicker.types.images],
+        allowMultiSelection: false,
       });
       for (const res of results) {
         setSingleFile(prev => [...prev, res]);
@@ -282,153 +285,146 @@ const Complaints = () => {
         style={{
           flex: 1,
         }}>
-        <CustomBottomSheet
-          isVisible={isVisible}
-          color="rgba(0.5, 0.25, 0, 0.2)"
-          UI={
-            <SafeAreaView style={{flex: 1}}>
+        <Modal
+          visible={isVisible}
+          style={{margin: 0, justifyContent: 'flex-end'}}>
+          <View style={{flex: 1}}>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-end',
+                marginBottom: 50,
+              }}>
               <View
                 style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'flex-end',
-                  marginBottom: 50,
+                  width: '20%',
+                  height: 50,
                 }}>
-                <View
-                  style={{
-                    width: '20%',
-                    height: 50,
-                  }}>
-                  <Icon
-                    raised
-                    name="times"
-                    type="font-awesome"
-                    color="#f50"
-                    onPress={() => handleCancelButton()}
-                  />
-                </View>
-                <View
-                  style={{
-                    width: '20%',
-                    height: 50,
-                  }}>
-                  <Icon
-                    raised
-                    name="paper-plane"
-                    type="font-awesome"
-                    color="#00aced"
-                    onPress={() => handleSendButton()}
-                  />
-                </View>
-
-                <Divider style={{marginTop: 20, backgroundColor: 'grey'}} />
+                <Icon
+                  raised
+                  name="times"
+                  type="font-awesome"
+                  color="#f50"
+                  onPress={() => handleCancelButton()}
+                />
               </View>
               <View
                 style={{
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'flex-start',
+                  width: '20%',
+                  height: 50,
+                }}>
+                <Icon
+                  raised
+                  name="paper-plane"
+                  type="font-awesome"
+                  color="#00aced"
+                  onPress={() => handleSendButton()}
+                />
+              </View>
+
+              <Divider style={{marginTop: 20, backgroundColor: 'grey'}} />
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'flex-start',
+              }}>
+              <View
+                style={{
+                  width: '100%',
+                }}>
+                <Input
+                  placeholder="Subject"
+                  onChangeText={value => handleSubject(value)}
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+              }}>
+              <View
+                style={{
+                  width: '100%',
                 }}>
                 <View
                   style={{
-                    width: '100%',
+                    backgroundColor: 'white)',
                   }}>
                   <Input
-                    placeholder="Subject"
-                    onChangeText={value => handleSubject(value)}
+                    placeholder="Message"
+                    multiline
+                    numberOfLines={5}
+                    onChangeText={value => handleComplaintmessage(value)}
                   />
                 </View>
               </View>
+              <View style={{width: '30%', height: 100, padding: 5}}>
+                <Button
+                  style={{color: 'black'}}
+                  icon={<Icons name="file-image-o" size={15} color="green" />}
+                  iconLeft
+                  type="outline"
+                  title=" Photo"
+                  onPress={selectFile}
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'column',
+                justifyContent: 'flex-start',
+              }}>
               <View
                 style={{
-                  flex: 1,
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
+                  width: '100%',
+                  height: 450,
+                  maxHeight: 10000,
                 }}>
                 <View
                   style={{
-                    width: '100%',
+                    backgroundColor: 'white)',
                   }}>
-                  <View
-                    style={{
-                      backgroundColor: 'white)',
-                    }}>
-                    <Input
-                      placeholder="Message"
-                      multiline
-                      numberOfLines={5}
-                      onChangeText={value => handleComplaintmessage(value)}
-                    />
-                  </View>
+                  <Text style={{textAlign: 'center', padding: 10}}>
+                    Attached Image
+                  </Text>
                 </View>
-                <View style={{width: '30%', height: 30, padding: 5}}>
-                  <Button
-                    style={{color: 'black'}}
-                    icon={<Icons name="file-image-o" size={15} color="green" />}
-                    iconLeft
-                    type="outline"
-                    title=" Photo"
-                    onPress={selectFile}
-                  />
-                </View>
+                <ScrollView>
+                  <CustomFlexBox label="flexDirection" selectedValue={'column'}>
+                    {complaintResource.map((item, index) => (
+                      <View style={{width: 100 + '%'}} key={index}>
+                        <TouchableNativeFeedback
+                          onLongPress={() => handleRemoveItem(item, index)}
+                          underlayColor="white">
+                          <Card
+                            style={styles.avatar}
+                            radius={1}
+                            backgroundColor={'#ffffff'}>
+                            <View
+                              style={{
+                                flexDirection: 'row',
+                                height: 500,
+                                maxHeight: 2000,
+                                alignItems: 'center',
+                              }}>
+                              <ImageBackground
+                                source={{
+                                  uri: item.uri,
+                                }}
+                                style={styles.avatar}></ImageBackground>
+                            </View>
+                          </Card>
+                        </TouchableNativeFeedback>
+                      </View>
+                    ))}
+                  </CustomFlexBox>
+                </ScrollView>
               </View>
-              <View
-                style={{
-                  flex: 1,
-                  flexDirection: 'column',
-                  justifyContent: 'flex-start',
-                }}>
-                <View
-                  style={{
-                    width: '100%',
-                    height: 450,
-                    maxHeight: 10000,
-                  }}>
-                  <View
-                    style={{
-                      backgroundColor: 'white)',
-                    }}>
-                    <Text style={{textAlign: 'center', padding: 10}}>
-                      Attached Image
-                    </Text>
-                  </View>
-                  <ScrollView>
-                    <CustomFlexBox
-                      label="flexDirection"
-                      selectedValue={'column'}>
-                      {complaintResource.map((item, index) => (
-                        <View style={{width: 100 + '%'}} key={index}>
-                          <TouchableNativeFeedback
-                            onLongPress={() => handleRemoveItem(item, index)}
-                            underlayColor="white">
-                            <Card
-                              style={styles.avatar}
-                              radius={1}
-                              backgroundColor={'#ffffff'}>
-                              <View
-                                style={{
-                                  flexDirection: 'row',
-                                  height: 500,
-                                  maxHeight: 2000,
-                                  alignItems: 'center',
-                                }}>
-                                <ImageBackground
-                                  source={{
-                                    uri: item.uri,
-                                  }}
-                                  style={styles.avatar}></ImageBackground>
-                              </View>
-                            </Card>
-                          </TouchableNativeFeedback>
-                        </View>
-                      ))}
-                    </CustomFlexBox>
-                  </ScrollView>
-                </View>
-              </View>
-            </SafeAreaView>
-          }
-        />
+            </View>
+          </View>
+        </Modal>
       </GestureRecognizer>
       <FAB
         style={styles.fab}

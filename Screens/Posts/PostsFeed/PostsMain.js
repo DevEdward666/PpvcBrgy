@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {useDispatch, useSelector} from 'react-redux';
 import {action_get_posts} from '../../../Services/Actions/PostsActions';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Posts from './Posts';
 import styles from './style';
 function PostsMain(props) {

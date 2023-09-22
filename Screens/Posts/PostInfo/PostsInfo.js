@@ -76,9 +76,8 @@ const PostsInfo = () => {
   }, [posts_info]);
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    wait(1000).then(() => {
+    dispatch(action_get_posts_info(posts_pk)).then(() => {
       setRefreshing(false);
-      dispatch(action_get_posts_info(posts_pk));
     });
   }, [dispatch, posts_pk]);
 
@@ -259,7 +258,7 @@ const PostsInfo = () => {
               <Icons name="thumbs-up" size={15} color="grey" />
             </View>
             <View style={{width: 80}}>
-              {posts_info[0]?.reActions?.map((likes, index) => {
+              {posts_info[0]?.reactions?.map((likes, index) => {
                 return (
                   <Badge status="primary" key={index} value={likes?.likes} />
                 );
@@ -332,7 +331,60 @@ const PostsInfo = () => {
           </View>
         );
       })}
-
+      <ScrollView>
+        <View>
+          <View style={styles.containerNOTIFICATION}>
+            <Text>Comments</Text>
+          </View>
+        </View>
+        {posts_comments.map(Notification => {
+          return (
+            <Card
+              key={Notification.posts_comment_pk}
+              containerStyle={{borderRadius: 14}}>
+              <View style={styles.containercomment}>
+                <View style={styles.contentNOTIFICATION}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'space-around',
+                      marginBottom: 50,
+                      height: 100,
+                    }}>
+                    <View style={{width: 30 + '%', height: 100}}>
+                      <Image
+                        source={{
+                          uri: `${base_url}/${Notification?.pic}`,
+                        }}
+                        style={{
+                          marginTop: 10,
+                          marginStart: 10,
+                          width: 40,
+                          height: 40,
+                          borderRadius: 120 / 2,
+                          overflow: 'hidden',
+                          borderWidth: 3,
+                        }}
+                      />
+                    </View>
+                    <View style={{width: '95%', height: 100}}>
+                      <Text style={styles.containerNOTIFICATION}>
+                        {Notification?.fullname}
+                        {'\n'}
+                        {Notification?.body}
+                      </Text>
+                      <Text style={styles.timestamp}>
+                        {Notification?.TIMESTAMP}
+                      </Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </Card>
+          );
+        })}
+      </ScrollView>
       {/* // ) : (
         //   <>
         //     <Text numberOfLines={6} style={styles.noimagetext}>
@@ -350,14 +402,16 @@ const PostsInfo = () => {
           UI={
             <SafeAreaView>
               <ScrollView>
-                <Card>
+                <View>
                   <View style={styles.containerNOTIFICATION}>
                     <Text>Comments</Text>
                   </View>
-                </Card>
+                </View>
                 {posts_comments.map(Notification => {
                   return (
-                    <Card key={Notification.posts_comment_pk}>
+                    <Card
+                      key={Notification.posts_comment_pk}
+                      containerStyle={{borderRadius: 14}}>
                       <View style={styles.containercomment}>
                         <View style={styles.contentNOTIFICATION}>
                           <View
@@ -401,7 +455,7 @@ const PostsInfo = () => {
                   );
                 })}
               </ScrollView>
-              <Card>
+              <View>
                 <View style={styles.containerNOTIFICATION}>
                   <View style={styles.contentNOTIFICATION}>
                     <Text style={styles.nameNOTIFICATION}>Comment</Text>
@@ -432,7 +486,7 @@ const PostsInfo = () => {
                     </View>
                   </View>
                 </View>
-              </Card>
+              </View>
             </SafeAreaView>
           }
         />

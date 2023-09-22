@@ -404,7 +404,7 @@ const ComplaintsInfo = () => {
                           </View> */
                   }
                 })}
-                <Card>
+                <View style={{marginTop: 20}}>
                   <View style={styles.containerNOTIFICATION}>
                     <View style={styles.contentNOTIFICATION}>
                       <View
@@ -443,7 +443,7 @@ const ComplaintsInfo = () => {
                       </View>
                     </View>
                   </View>
-                </Card>
+                </View>
               </ScrollView>
             }
           />

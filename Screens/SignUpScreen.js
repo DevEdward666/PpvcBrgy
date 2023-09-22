@@ -15,6 +15,7 @@ import * as ImagePicker from 'react-native-image-picker';
 import {TextInput} from 'react-native-paper';
 import {ProgressStep, ProgressSteps} from 'react-native-progress-steps';
 import {swipeDirections} from 'react-native-swipe-gestures';
+import {useNavigation} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 import CustomAlert from '../Plugins/CustomAlert';
 import {action_SignUp_user} from '../Services/Actions/SignUpActions';
@@ -35,7 +36,7 @@ const SignUpScreen = () => {
   const [birthdate, setbirthdate] = useState('');
   const [city, setcity] = useState('');
   const [isVisible, setIsVisible] = useState(false);
-
+  const navigation = useNavigation();
   const [nationality, setnationality] = useState('Filipino');
   const [civilstatus, setcivilstatus] = useState('');
   const [dialect, setdialect] = useState('');
@@ -140,6 +141,7 @@ const SignUpScreen = () => {
     try {
       const results = await DocumentPicker.pick({
         type: [DocumentPicker.types.images],
+        allowMultiSelection: false,
       });
 
       setPhotoSingleFile(results);
@@ -537,12 +539,11 @@ const SignUpScreen = () => {
       },
     };
     ImagePicker.launchImageLibrary(options, response => {
-      console.log(response.base64);
-      setresourcePathProfile(response.uri); // update the local state, this will rerender your TomarFoto component with the photo uri path.
-      setPhotoSingleFile(response.base64); // update the local state, this will rerender your TomarFoto component with the photo uri path.
+      console.log(response?.assets[0]?.base64);
+      setresourcePathProfile(response?.assets[0]?.uri); // update the local state, this will rerender your TomarFoto component with the photo uri path.
+      setPhotoSingleFile(response?.assets[0]?.base64); // update the local state, this will rerender your TomarFoto component with the photo uri path.
 
       if (response.didCancel) {
-        console.log('User cancelled photo picker');
         alert('You did not select any image');
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error);
@@ -584,9 +585,9 @@ const SignUpScreen = () => {
           password,
         ),
       );
-      await setalertshow(true);
-      await setalertmessage('Registered Successfully');
-      await setalerttitle('User Registration');
+      setalertshow(true);
+      setalertmessage('Registered Successfully');
+      setalerttitle('User Registration');
       navigation.navigate('Home');
       // await Actions.home();
     } else {

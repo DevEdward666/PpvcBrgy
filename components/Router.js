@@ -154,9 +154,9 @@ const RouterHook = () => {
           }}
         />
         <Stack.Screen
-          name="Family Assesment Data Form"
+          name="Family Assessment Data Form"
           component={FADMain}
-          title="Family Assesment Data Form"
+          title="Family Assessment Data Form"
           // titleStyle={{color: '#623256'}}
           // navBarButtonColor="#623256"
           options={{

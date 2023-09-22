@@ -267,7 +267,7 @@ const MeInfo = () => {
       <View
         radius={1}
         backgroundColor={'#ffffff'}
-        style={{height: screenHeight - 450, marginBottom: 10}}>
+        style={{height: screenHeight - 550, marginBottom: 10}}>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <View
             style={{
@@ -308,17 +308,14 @@ const MeInfo = () => {
               }}>
               Civil Status : {users_reducers?.civil_status}
             </Text>
-            <View style={{width: '100%', height: 50, padding: 5}}></View>
           </View>
         </View>
       </View>
-      <Card style={{height: 70, padding: 10}}>
-        <Button
-          title="Show family members"
-          type="clear"
-          onPress={() => handleAddPostPress()}
-        />
-      </Card>
+      <Button
+        title="Show family members"
+        type="clear"
+        onPress={() => handleAddPostPress()}
+      />
     </Card>
   );
   return (
@@ -341,7 +338,7 @@ const MeInfo = () => {
         keyExtractor={(item, index) => index.toString()}
         onEndReachedThreshold={0.1}
         renderItem={({item, index}) => (
-          <Card containerStyle={styles.plate}>
+          <View containerStyle={styles.plate}>
             <TouchableHighlight
               onPress={() => gotopostsinfo(item)}
               underlayColor="white">
@@ -378,7 +375,7 @@ const MeInfo = () => {
                           }}
                         />
                       </View>
-                      <View style={{width: 95 + '%', height: 50}}>
+                      <View style={{width: 95 + '%', height: 70}}>
                         <Text style={styles.containerNOTIFICATION}>
                           {item?.user_full_name}
                           {'\n'}
@@ -427,7 +424,7 @@ const MeInfo = () => {
                     </Text>
                   </>
                 )}
-                <Card style={{marginStart: -10}}>
+                <View style={{marginStart: -10}}>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -448,7 +445,7 @@ const MeInfo = () => {
                         <Icons name="thumbs-up" size={15} color="grey" />
                       </View>
                       <View style={{width: 80}}>
-                        {item?.reActions?.map((likes, index) => {
+                        {item?.reactions?.map((likes, index) => {
                           return (
                             <Badge
                               status="primary"
@@ -489,10 +486,10 @@ const MeInfo = () => {
                       containerStyle={{height: 35, marginBottom: 15}}
                     />
                   )}
-                </Card>
+                </View>
               </Card>
             </TouchableHighlight>
-          </Card>
+          </View>
         )}
         ListHeaderComponent={<FlatListHeader />}
       />
@@ -739,7 +736,7 @@ const MeInfo = () => {
                           <TouchableNativeFeedback
                             onLongPress={() => handleRemoveItem(item, index)}
                             underlayColor="white">
-                            <Card
+                            <View
                               style={styles.avatar}
                               radius={1}
                               backgroundColor={'#ffffff'}>
@@ -756,7 +753,7 @@ const MeInfo = () => {
                                   }}
                                   style={styles.avatar}></ImageBackground>
                               </View>
-                            </Card>
+                            </View>
                           </TouchableNativeFeedback>
                         </View>
                       ))}

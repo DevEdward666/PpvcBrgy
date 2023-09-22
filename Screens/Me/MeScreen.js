@@ -90,7 +90,7 @@ const MeScreen = () => {
   const handleYesAction = useCallback(() => {
     dispatch(action_upadatenewuser(users_reducers?.user_pk));
     dispatch(action_get_userinfo());
-    navigation.navigate('Family Assesment Data Form');
+    navigation.navigate('Family Assessment Data Form');
     //Actions.fad();
   }, [dispatch, users_reducers?.user_pk]);
   const handleNoAction = useCallback(() => {
@@ -103,7 +103,7 @@ const MeScreen = () => {
       if (mounted) {
         if (new_user) {
           Alert.alert(
-            'Famaily Assesment Data',
+            'Famaily Assessment Data',
             'Are you the head of the family?',
             [
               {
@@ -121,7 +121,7 @@ const MeScreen = () => {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [new_user]);
 
   const gotocomplaints = useCallback(() => {
     navigation.navigate('List of Complaints');
@@ -141,17 +141,22 @@ const MeScreen = () => {
     //Actions.officials();
   }, []);
   const gotofad = useCallback(() => {
-    if (
-      users_reducers?.new_user !== 'true' &&
-      users_reducers?.ulo_pamilya !== null
-    ) {
-      navigation.navigate('Family Assesment Data Form');
-      //Actions.fad();
-    } else {
+    console.log(!users_reducers?.new_user);
+    if (users_reducers?.ulo_pamilya === null) {
       Alert.alert(
-        'Famaily Assesment Data',
+        'Famaily Assessment Data',
         'Your are not the head of the family',
       );
+      //Actions.fad();
+    } else if (users_reducers?.ulo_pamilya !== null) {
+      if (users_reducers?.new_user !== true) {
+        Alert.alert(
+          'Famaily Assessment Data',
+          'Assessment data has already been submitted.',
+        );
+      } else {
+        navigation.navigate('Family Assessment Data Form');
+      }
     }
   }, [users_reducers]);
   const gotosettings = useCallback(() => {
@@ -432,7 +437,7 @@ const MeScreen = () => {
                           fontSize: 12,
                           alignContent: 'center',
                         }}>
-                        Family Assesment Data
+                        Family Assessment Data
                       </Text>
                     </View>
                   </View>

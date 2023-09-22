@@ -8,7 +8,7 @@ import {
   GET_USER_POSTS,
   GET_POSTS_REACTION,
   GET_LIMITED_COMMENTS,
-  GET_POSTS_REACTIONS,
+  GET_POSTS_reactions,
   GET_POSTS_PK,
 } from '../Types/PostsTypes';
 export const action_get_user_posts = () => async dispatch => {
@@ -210,7 +210,7 @@ export const action_get_posts_reactions = posts_pk => async dispatch => {
   if (parseData.status != 400) {
     if (parseData.success != false) {
       dispatch({
-        type: GET_POSTS_REACTIONS,
+        type: GET_POSTS_reactions,
         payload: parseData.data,
       });
     }

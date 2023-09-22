@@ -5,7 +5,7 @@ import {
   GET_USER_POSTS,
   GET_POSTS_REACTION,
   GET_LIMITED_COMMENTS,
-  GET_POSTS_REACTIONS,
+  GET_POSTS_reactions,
   GET_POSTS_PK,
 } from '../Types/PostsTypes';
 import {BASE_URL} from '../Types/Default_Types';
@@ -34,7 +34,7 @@ const PostsReducers = (data_state = posts, actions) => {
       return {...data_state, posts_reaction: actions.payload};
     case GET_LIMITED_COMMENTS:
       return {...data_state, posts_comments_limit: actions.payload};
-    case GET_POSTS_REACTIONS:
+    case GET_POSTS_reactions:
       return {...data_state, posts_reactions: actions.payload};
     case GET_POSTS_PK:
       return {...data_state, posts_pk: actions.payload};

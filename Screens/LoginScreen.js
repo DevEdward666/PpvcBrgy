@@ -108,10 +108,15 @@ const LoginScreen = () => {
           flexDirection: 'row',
           justifyContent: 'center',
         }}>
-        <View style={{width: '70%', padding: 20, alignItems: 'center'}}>
+        <View
+          style={{
+            width: '70%',
+            padding: 20,
+            height: 100,
+            alignItems: 'center',
+          }}>
           <TouchableHighlight
             style={styles.login}
-            underlayColor="#623256"
             onPress={() => handleSubmit()}>
             <Text style={styles.submitText}>Login</Text>
           </TouchableHighlight>
@@ -147,11 +152,11 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   login: {
+    display: 'flex',
+    flexDirection: 'column',
     marginTop: 10,
-    paddingTop: 10,
     width: '100%',
-    alignSelf: 'center',
-    paddingBottom: 20,
+    justifyContent: 'center',
     height: 50,
     backgroundColor: '#623256',
     borderRadius: 20,

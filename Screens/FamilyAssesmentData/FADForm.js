@@ -4,6 +4,7 @@ import {ScrollView} from 'react-native-gesture-handler';
 import {ProgressStep, ProgressSteps} from 'react-native-progress-steps';
 import {
   View,
+  Alert,
   TouchableHighlight,
   StyleSheet,
   Button,
@@ -223,8 +224,6 @@ const FADForm = () => {
     {label: 'Skill Training', value: 'Skill Training'},
     {label: 'Employment', value: 'Employment'},
   ];
-  // console.log(residents_data_exist?.data[0]?.fam_members.length);
-  console.log(fam_member);
   const handleSubmit = useCallback(async () => {
     setspinner(true);
 
@@ -322,7 +321,7 @@ const FADForm = () => {
       if (mounted) {
         if (residents_issuccess) {
           alert(
-            'Your Application for Family Assesment Data has been submitted successfully',
+            'Your Application for Family Assessment Data has been submitted successfully',
           );
 
           setspinner(false);
@@ -352,7 +351,7 @@ const FADForm = () => {
     setPeopleInsidetheHouse([]);
     setfam_member([]);
 
-    residents_data_exist[0]?.fam_members?.forEach(item => {
+    residents_data_exist[0]?.fam_members?.map(item => {
       const fullName = `${item.first_name} ${item.last_name}`;
       const resident_pk = parseInt(item.resident_pk);
 
@@ -814,7 +813,7 @@ const FADForm = () => {
             // Function to update state and saver
             const updateFieldData = (field, setFunc, setSaverFunc) => {
               if (field) {
-                field.forEach(item => {
+                field.map(item => {
                   setFunc(prev => [
                     ...prev,
                     {label: item, value: item},
@@ -860,7 +859,7 @@ const FADForm = () => {
               setkahimtangsakomunidad,
               setkahimtangsakomunidadsaver,
             );
-            serbisyo_nadawat.forEach(item => {
+            serbisyo_nadawat.map(item => {
               let agency = '';
               if (item.programa === 'Scholarship') {
                 setscholarship(item.ahensya);
@@ -921,7 +920,13 @@ const FADForm = () => {
     return () => {
       mounted = false;
     };
-  }, [dispatch, searchvalue, residents_data_exist, resident_form]);
+  }, [
+    dispatch,
+    searchvalue,
+    residents_data_exist,
+    resident_form,
+    users_reducers,
+  ]);
 
   const onSwipe = useCallback((gestureName, gestureState) => {
     const {SWIPE_UP, SWIPE_DOWN, SWIPE_LEFT, SWIPE_RIGHT} = swipeDirections;

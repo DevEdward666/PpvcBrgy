@@ -1,11 +1,14 @@
 import {StyleSheet} from 'react-native';
 const styles = StyleSheet.create({
   avatar: {
-    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
     height: 500,
+    marginBottom: 10,
+    width: 350,
     borderColor: 'white',
-    alignSelf: 'center',
-    resizeMode: 'contain',
+    alignItems: 'center',
+    resizeMode: 'cover',
   },
   plate: {
     flex: 1,
