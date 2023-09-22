@@ -5,17 +5,21 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        node-version: [18.16.0]
     steps:
       - uses: actions/checkout@v2
-
+      
       - name: Install dependencies
-        run: yarn
+        run: npm i
 
       - name: Build Android Release
-        run: cd android && ./gradlew assembleRelease
+        run: cd android && bash ./gradlew assembleRelease
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
           name: release
-          path: android/app/build/outputs/apk/release/app-release.apk
+          path: Patient/android/app/build/outputs/apk/release/app-release.apk
