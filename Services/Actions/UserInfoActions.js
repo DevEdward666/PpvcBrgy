@@ -1,12 +1,12 @@
 import {SET_DATA} from '../Types/LoginTypes';
-import {BASE_URL} from '../Types/Default_Types';
+import settings from '../../settings.json'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 //import {Actions} from 'react-native-router-flux';
 import {GET_USER_INFO} from '../Types/UserInfoTypes';
 
 export const action_get_userinfo = () => async (dispatch) => {
-  //   var url = `${BASE_URL}/api/user/currentUser`;
-  var url = `${BASE_URL}/api/user/userinfo`;
+  //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+  var url = `${settings.BASE_URL}/api/user/userinfo`;
   const user_id = await AsyncStorage.getItem('user_id');
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;

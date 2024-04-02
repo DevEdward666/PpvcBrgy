@@ -1,4 +1,4 @@
-import {BASE_URL} from '../Types/Default_Types';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   GET_COMPLAINTS,
@@ -7,9 +7,9 @@ import {
   GET_COMPLAINTS_MESSAGE,
 } from '../Types/Complaints_Types';
 import {NOTIFY} from '../Types/Default_Types';
-
+import settings from '../../settings.json'; 
 export const action_get_complaints = (reported_by) => async (dispatch) => {
-  var url = `${BASE_URL}/api/complaintmobile/getComplaintList`;
+  var url = `${settings.BASE_URL}/api/complaintmobile/getComplaintList`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
   const bearer = 'Bearer ' + bearer_token;
@@ -37,7 +37,7 @@ export const action_get_complaints = (reported_by) => async (dispatch) => {
 export const action_get_complaints_info = (complaint_pk) => async (
   dispatch,
 ) => {
-  var url = `${BASE_URL}/api/complaintmobile/getSingleComplaint`;
+  var url = `${settings.BASE_URL}/api/complaintmobile/getSingleComplaint`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
   const bearer = 'Bearer ' + bearer_token;
@@ -67,7 +67,7 @@ export const action_insert_complaints = (
   body,
   complaint_file,
 ) => async () => {
-  var url = `${BASE_URL}/api/complaintmobile/addComplaint`;
+  var url = `${settings.BASE_URL}/api/complaintmobile/addComplaint`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
   const bearer = 'Bearer ' + bearer_token;
@@ -97,7 +97,7 @@ export const action_insert_complaints = (
 export const action_get_complaints_messages = (complaint_pk) => async (
   dispatch,
 ) => {
-  var url = `${BASE_URL}/api/complaintmobile/getComplaintMessage`;
+  var url = `${settings.BASE_URL}/api/complaintmobile/getComplaintMessage`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
   const bearer = 'Bearer ' + bearer_token;
@@ -126,7 +126,7 @@ export const action_get_complaints_messages = (complaint_pk) => async (
 export const action_set_complaints_messages = (body, complaint_pk) => async (
   dispatch,
 ) => {
-  var url = `${BASE_URL}/api/complaintmobile/addComplaintMessage`;
+  var url = `${settings.BASE_URL}/api/complaintmobile/addComplaintMessage`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
   const bearer = 'Bearer ' + bearer_token;

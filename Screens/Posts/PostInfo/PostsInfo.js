@@ -112,7 +112,7 @@ const PostsInfo = () => {
   };
   const hadnleClickPhoto = img => {
     setvisible(true);
-    setimgpath(`${base_url}/${img?.file_path}`);
+    setimgpath(`${settings.BASE_URL}/${img?.file_path}`);
   };
   const images = [
     {
@@ -203,7 +203,7 @@ const PostsInfo = () => {
               <View style={{width: 20 + '%', height: 20}}>
                 <Image
                   source={{
-                    uri: `${base_url}/${posts_info[0]?.user_pic}`,
+                    uri: `${settings.BASE_URL}/${posts_info[0]?.user_pic}`,
                   }}
                   style={{
                     marginTop: 10,
@@ -321,7 +321,7 @@ const PostsInfo = () => {
                   }}>
                   <ImageBackground
                     source={{
-                      uri: `${base_url}/${img?.file_path}`,
+                      uri: `${settings.BASE_URL}/${img?.file_path}`,
                     }}
                     style={styles.avatar}
                   />
@@ -355,7 +355,7 @@ const PostsInfo = () => {
                     <View style={{width: 30 + '%', height: 100}}>
                       <Image
                         source={{
-                          uri: `${base_url}/${Notification?.pic}`,
+                          uri: `${settings.BASE_URL}/${Notification?.pic}`,
                         }}
                         style={{
                           marginTop: 10,
@@ -425,7 +425,7 @@ const PostsInfo = () => {
                             <View style={{width: 30 + '%', height: 100}}>
                               <Image
                                 source={{
-                                  uri: `${base_url}/${Notification?.pic}`,
+                                  uri: `${settings.BASE_URL}/${Notification?.pic}`,
                                 }}
                                 style={{
                                   marginTop: 10,

@@ -1,4 +1,4 @@
-import {BASE_URL} from '../Types/Default_Types';
+import settings from '../../settings.json'; 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 //import {Actions} from 'react-native-router-flux';
 export const action_SignUp_user = (
@@ -26,7 +26,7 @@ export const action_SignUp_user = (
   houseownedby,
   password,
 ) => async () => {
-  var url = `${BASE_URL}/api/residentmobile/addMobileResident`;
+  var url = `${settings.BASE_URL}/api/residentmobile/addMobileResident`;
 
   let formdata = new FormData();
   formdata.append('pic', PhotoSingleFile);
@@ -101,7 +101,7 @@ export const action_update_user = (
   houseownedby,
   grado,
 ) => async () => {
-  var url = `${BASE_URL}/api/residentmobile/updateMobileResident`;
+  var url = `${settings.BASE_URL}/api/residentmobile/updateMobileResident`;
 
   let formdata = new FormData();
   formdata.append('resident_pk', resident_pk);

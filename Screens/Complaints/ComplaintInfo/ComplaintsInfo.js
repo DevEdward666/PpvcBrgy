@@ -33,6 +33,7 @@ import io from 'socket.io-client';
 import moment from 'moment';
 import styles from './style';
 import {useNavigation} from '@react-navigation/native';
+import settings from '../../../settings.json'; 
 const ComplaintsInfo = () => {
   const users_reducers = useSelector(state => state.UserInfoReducers.data);
   const {width, height} = Dimensions.get('window');
@@ -127,7 +128,7 @@ const ComplaintsInfo = () => {
   useEffect(() => {
     let mounted = true;
     const socketsio = () => {
-      socketRef.current = io(`${base_url}/socket/complaint/chat`, {
+      socketRef.current = io(`${settings.BASE_URL}/socket/complaint/chat`, {
         query: {
           token: token,
         },
@@ -301,7 +302,7 @@ const ComplaintsInfo = () => {
                       }}>
                       <ImageBackground
                         source={{
-                          uri: `${base_url}/${item?.file_path}`,
+                          uri: `${settings.BASE_URL}/${item?.file_path}`,
                         }}
                         style={styles.avatar}
                       />

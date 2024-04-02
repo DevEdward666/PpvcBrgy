@@ -1,12 +1,11 @@
 import {SET_DATA} from '../Types/LoginTypes';
-import {BASE_URL} from '../Types/Default_Types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 //import {Actions} from 'react-native-router-flux';
 import {useNavigation} from '@react-navigation/native';
-
+import settings from '../../settings.json'; 
 export const action_Login_user = (email, password) => async () => {
   const value = await AsyncStorage.getItem('tokenizer');
-  var url = `${BASE_URL}/api/user/login`;
+  var url = `${settings.BASE_URL}/api/user/login`;
   let formdata = new FormData();
   formdata.append('email', email);
   formdata.append('password', password);

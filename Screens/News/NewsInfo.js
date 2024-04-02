@@ -32,7 +32,6 @@ import {
 } from '../../Services/Actions/NewsActions';
 import moment from 'moment';
 import {Card} from 'react-native-elements';
-import BASE_URL from '../../Services/Types/Default_Types';
 import CustomBottomSheet from '../../Plugins/CustomBottomSheet';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
@@ -78,7 +77,7 @@ const UINews = () => {
           setimages((prev) => [
             ...prev,
             {
-              uri: `${base_url}/${i.file_path}`,
+              uri: `${settings.BASE_URL}/${i.file_path}`,
             },
           ]);
         });
@@ -100,7 +99,7 @@ const UINews = () => {
       return (
         <View style={styles.item}>
           <ParallaxImage
-            source={{uri: `${base_url}/${item?.file_path}`}}
+            source={{uri: `${settings.BASE_URL}/${item?.file_path}`}}
             containerStyle={styles.imageContainer}
             style={styles.image}
             parallaxFactor={0.1}

@@ -1,6 +1,6 @@
-import {BASE_URL} from '../Types/Default_Types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 //import {Actions} from 'react-native-router-flux';
+import settings from '../../settings.json'; 
 import {
   GET_POSTS_COMMENTS,
   GET_POSTS,
@@ -12,8 +12,8 @@ import {
   GET_POSTS_PK,
 } from '../Types/PostsTypes';
 export const action_get_user_posts = () => async dispatch => {
-  //   var url = `${BASE_URL}/api/user/currentUser`;
-  var url = `${BASE_URL}/api/postsMobile/getUserPosts`;
+  //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+  var url = `${settings.BASE_URL}/api/postsMobile/getUserPosts`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
   const bearer = 'Bearer ' + bearer_token;
@@ -33,8 +33,8 @@ export const action_get_user_posts = () => async dispatch => {
   }
 };
 export const action_get_user_comments_limit = posts_pk => async dispatch => {
-  //   var url = `${BASE_URL}/api/user/currentUser`;
-  var url = `${BASE_URL}/api/postsMobile/getcomments`;
+  //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+  var url = `${settings.BASE_URL}/api/postsMobile/getcomments`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
   const bearer = 'Bearer ' + bearer_token;
@@ -62,7 +62,7 @@ export const action_get_posts = offset => async dispatch => {
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
   const bearer = 'Bearer ' + bearer_token;
-  var url = `${BASE_URL}/api/postsMobile/getPosts`;
+  var url = `${settings.BASE_URL}/api/postsMobile/getPosts`;
   let formdata = new FormData();
   formdata.append('offset', offset);
   const fetchdata = await fetch(url, {
@@ -83,7 +83,7 @@ export const action_get_posts = offset => async dispatch => {
   console.log(parseData);
 };
 export const action_get_posts_info = posts_pk => async dispatch => {
-  var url = `${BASE_URL}/api/postsMobile/getSinglePostWithPhoto`;
+  var url = `${settings.BASE_URL}/api/postsMobile/getSinglePostWithPhoto`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
   const bearer = 'Bearer ' + bearer_token;
@@ -108,7 +108,7 @@ export const action_get_posts_info = posts_pk => async dispatch => {
   }
 };
 export const action_posts_add_comment = (posts_pk, body) => async () => {
-  var url = `${BASE_URL}/api/postsMobile/addPostComment`;
+  var url = `${settings.BASE_URL}/api/postsMobile/addPostComment`;
   const token = await AsyncStorage.getItem('tokenizer');
   const user_pk = await AsyncStorage.getItem('user_id');
   const bearer_token = token;
@@ -135,8 +135,8 @@ export const action_posts_add_comment = (posts_pk, body) => async () => {
 
 export const action_set_posts_reactions =
   (posts_pk, reaction) => async dispatch => {
-    //   var url = `${BASE_URL}/api/user/currentUser`;
-    var url = `${BASE_URL}/api/postsMobile/addPostReaction`;
+    //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+    var url = `${settings.BASE_URL}/api/postsMobile/addPostReaction`;
     const token = await AsyncStorage.getItem('tokenizer');
     const bearer_token = token;
     const bearer = 'Bearer ' + bearer_token;
@@ -163,8 +163,8 @@ export const action_set_posts_reactions =
   };
 
 export const action_get_posts_comments = posts_pk => async dispatch => {
-  //   var url = `${BASE_URL}/api/user/currentUser`;
-  var url = `${BASE_URL}/api/postsMobile/getPostsComments`;
+  //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+  var url = `${settings.BASE_URL}/api/postsMobile/getPostsComments`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
   const bearer = 'Bearer ' + bearer_token;
@@ -191,8 +191,8 @@ export const action_get_posts_comments = posts_pk => async dispatch => {
 };
 
 export const action_get_posts_reactions = posts_pk => async dispatch => {
-  //   var url = `${BASE_URL}/api/user/currentUser`;
-  var url = `${BASE_URL}/api/postsMobile/getreactions`;
+  //   var url = `${settings.BASE_URL}/api/user/currentUser`;
+  var url = `${settings.BASE_URL}/api/postsMobile/getreactions`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
   const bearer = 'Bearer ' + bearer_token;
@@ -218,7 +218,7 @@ export const action_get_posts_reactions = posts_pk => async dispatch => {
 };
 
 export const action_set_posts = (title, body, upload_files) => async () => {
-  var url = `${BASE_URL}/api/postsMobile/addPosts`;
+  var url = `${settings.BASE_URL}/api/postsMobile/addPosts`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
   const bearer = 'Bearer ' + bearer_token;

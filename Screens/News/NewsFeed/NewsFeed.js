@@ -213,7 +213,7 @@ const NewsFeed = () => {
                 }}>
                 <ImageBackground
                   source={{
-                    uri: `${base_url}/${item?.upload_files[0]?.file_path}`,
+                    uri: `${settings.BASE_URL}/${item?.upload_files[0]?.file_path}`,
                   }}
                   // source={{
                   //   uri:

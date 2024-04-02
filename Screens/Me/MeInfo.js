@@ -403,7 +403,7 @@ const MeInfo = () => {
                       <ImageBackground
                         source={item.upload_files?.map(item => {
                           return {
-                            uri: `${base_url}/${item.file_path}`,
+                            uri: `${settings.BASE_URL}/${item.file_path}`,
                             width: 400,
                             height: 100,
                           };
@@ -558,7 +558,7 @@ const MeInfo = () => {
                 <ImageBackground
                   source={item.upload_files.map((item) => {
                     return {
-                      uri: `${base_url}/${item.file_path}`,
+                      uri: `${settings.BASE_URL}/${item.file_path}`,
                       width: 400,
                       height: 100,
                     };

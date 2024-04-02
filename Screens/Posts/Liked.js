@@ -184,7 +184,7 @@ const UILiked = ({item}) => {
                             <View style={{width: 30 + '%', height: 100}}>
                               <Image
                                 source={{
-                                  uri: `${base_url}/${Notification?.pic}`,
+                                  uri: `${settings.BASE_URL}/${Notification?.pic}`,
                                 }}
                                 style={{
                                   marginTop: 10,

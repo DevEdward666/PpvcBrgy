@@ -127,7 +127,7 @@ function BottomNavigation() {
     let mounted = true;
 
     const notify = async () => {
-      socketRef.current = io(`${base_url}/socket/complaint/chat`, {
+      socketRef.current = io(`${settings.BASE_URL}/socket/complaint/chat`, {
         query: {
           token: token,
         },
