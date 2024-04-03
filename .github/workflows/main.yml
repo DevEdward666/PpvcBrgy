@@ -1,4 +1,4 @@
-name: Build and Deploy Android App
+name: Update Settings and Build Android
 
 on:
   push:
@@ -15,29 +15,65 @@ jobs:
       - name: Update BASE_URL
         run: |
           echo '{"BASE_URL": "https://brgy-37d-ppvc.azurewebsites.net/"}' > $GITHUB_WORKSPACE/settings.json
-
-      - name: Debug:List files in workspace
-        run: ls -R $GITHUB_WORKSPACE
-
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 14
 
-      - name: Grant execute permission to Gradle wrapper
-        run: chmod +x ./android/gradlew
-
-      - name: Debug:Print environment variables
-        run: printenv
-
+      - name: Install dependencies
+        run: npm install
+        
+      - name: Build android
+        run: npx react-native build-android --mode=release
+        
       - name: Build Android Release
-        run:  cd android && bash ./gradlew assembleDebug
-
-      - name: Debug:List APK files
-        run: ls -R $GITHUB_WORKSPACE/android/app/build/outputs/apk/debug
+        run: cd android && bash ./gradlew assembleDebug
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: release
           path: android/app/build/outputs/apk/debug/app-debug.apk
+# name: Build and Deploy Android App
+
+# on:
+#   push:
+#     branches:
+#       - main
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v2
+
+#       - name: Update BASE_URL
+#         run: |
+#           echo '{"BASE_URL": "https://brgy-37d-ppvc.azurewebsites.net/"}' > $GITHUB_WORKSPACE/settings.json
+
+#       - name: Debug:List files in workspace
+#         run: ls -R $GITHUB_WORKSPACE
+
+#       - name: Setup Node.js
+#         uses: actions/setup-node@v2
+#         with:
+#           node-version: ${{ matrix.node-version }}
+
+#       - name: Grant execute permission to Gradle wrapper
+#         run: chmod +x ./android/gradlew
+
+#       - name: Debug:Print environment variables
+#         run: printenv
+
+#       - name: Build Android Release
+#         run:  cd android && bash ./gradlew assembleDebug
+
+#       - name: Debug:List APK files
+#         run: ls -R $GITHUB_WORKSPACE/android/app/build/outputs/apk/debug
+
+#       - name: Upload Artifact
+#         uses: actions/upload-artifact@v2
+#         with:
+#           name: release
+#           path: android/app/build/outputs/apk/debug/app-debug.apk
