@@ -1,4 +1,4 @@
-name: Update Settings and Build Android
+name: Build and Deploy Android App
 
 on:
   push:
@@ -16,6 +16,9 @@ jobs:
         run: |
           echo '{"BASE_URL": "https://brgy-37d-ppvc.azurewebsites.net/"}' > $GITHUB_WORKSPACE/settings.json
 
+      - name: Debug:List files in workspace
+        run: ls -R $GITHUB_WORKSPACE
+
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
@@ -24,8 +27,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Debug:Print environment variables
+        run: printenv
+
       - name: Build Android Release
-        run: cd android && bash ./gradlew assembleDebug
+        run: cd android && ./gradlew assembleDebug --info
+
+      - name: Debug:List APK files
+        run: ls -R $GITHUB_WORKSPACE/android/app/build/outputs/apk/debug
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
