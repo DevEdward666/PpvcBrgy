@@ -29,7 +29,7 @@ jobs:
         run: npx react-native build-android --mode=release
         
       - name: Build Android Release
-        run: cd android && bash ./gradlew assembleDebug
+        run: cd android && bash ./gradlew assembleRelease
 
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
