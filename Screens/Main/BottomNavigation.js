@@ -21,6 +21,7 @@ import io from 'socket.io-client';
 import {useNavigation} from '@react-navigation/native';
 import {compose} from 'redux';
 import CustomSnackBar from '../../Plugins/CustomSnackBar';
+import settings from '../../settings.json'; 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 

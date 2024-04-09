@@ -54,6 +54,7 @@ import CustomBottomSheetV2 from '../../../Plugins/CustomBottomSheetV2';
 import UILiked from '../Liked';
 import moment from 'moment';
 import {useNavigation} from '@react-navigation/native';
+import settings from '../../../settings.json'; 
 const Posts = () => {
   const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
   var IMAGES_PER_ROW = 3;

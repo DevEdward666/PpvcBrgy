@@ -17,7 +17,7 @@ import settings from '../../settings.json';
 
 export const action_get_news_lastweek = () => async dispatch => {
   //   var url = `${settings.BASE_URL}/api/user/currentUser`;
-  var url = `${settings.settings.BASE_URL}/api/newsmobile/getNewsDataPublishedLastWeek`;
+  var url = `${settings.BASE_URL}/api/newsmobile/getNewsDataPublishedLastWeek`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
   const bearer = 'Bearer ' + bearer_token;
@@ -37,7 +37,7 @@ export const action_get_news_lastweek = () => async dispatch => {
 
 export const action_get_news = () => async dispatch => {
   //   var url = `${settings.BASE_URL}/api/user/currentUser`;
-  var url = `${settings.settings.BASE_URL}/api/newsmobile/getNewsDataPublished`;
+  var url = `${settings.BASE_URL}/api/newsmobile/getNewsDataPublished`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
   const bearer = 'Bearer ' + bearer_token;
@@ -57,7 +57,7 @@ export const action_get_news = () => async dispatch => {
 };
 export const action_get_news_info = news_pk => async dispatch => {
   //   var url = `${settings.BASE_URL}/api/user/currentUser`;
-  var url = `${settings.settings.BASE_URL}/api/newsmobile/getSingleNewsWithPhoto`;
+  var url = `${settings.BASE_URL}/api/newsmobile/getSingleNewsWithPhoto`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
   const bearer = 'Bearer ' + bearer_token;

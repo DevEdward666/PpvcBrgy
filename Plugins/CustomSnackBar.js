@@ -20,13 +20,12 @@ const CustomSnackBar = ({show, message}) => {
         left: 0,
         position: 'absolute',
       }}>
-      <Snackbar duration={3000} visible={show} onDismiss={onDismissSnackBar}>
+      <Snackbar  duration={3000} visible={show} onDismiss={onDismissSnackBar}>
         {message}
       </Snackbar>
     </View>
   );
 };
-const styles = StyleSheet.create({});
 
 CustomSnackBar.propTypes = {};
 

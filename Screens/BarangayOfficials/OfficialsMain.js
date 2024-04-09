@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Spinner from 'react-native-loading-spinner-overlay';
 import {useDispatch, useSelector} from 'react-redux';
 import {action_get_barangay_officials_list} from '../../Services/Actions/BarangayOfficialsActions';
@@ -6,6 +6,7 @@ import BarangayOfficials from './BarangayOfficialsList';
 
 function OfficialsMain(props) {
   const dispatch = useDispatch();
+  const [getSpinner,setSpinner] = useState(false);
   const brgyofficiallist = useSelector(
     (state) => state.BarangayOfficialReducers.data_barangay,
   );
@@ -24,10 +25,18 @@ function OfficialsMain(props) {
       mounted = false;
     };
   }, [dispatch]);
-  console.log(brgyofficiallist);
+useEffect(()=> {
+  const initialize = () => {
+    setSpinner(true)
+    if(brgyofficiallist){
+      setSpinner(false)
+    }
+  }
+  initialize();
+},[brgyofficiallist])
   return (
     <>
-      {brgyofficiallist?.length <= 0 ? (
+      {getSpinner ? (
         <Spinner visible={true} textContent={'Fetching Data...'} />
       ) : null}
 

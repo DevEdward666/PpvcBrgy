@@ -15,6 +15,7 @@ import wait from '../../Plugins/waitinterval';
 import {ImageBackground} from 'react-native';
 import {Card} from 'react-native-elements';
 import {useNavigation} from '@react-navigation/native';
+import CustomAlert from '../../Plugins/CustomAlert';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 const ResetPassword = () => {
   const [password, setpassword] = useState('');
@@ -54,7 +55,9 @@ const ResetPassword = () => {
       }
     };
     mounted && index();
-    return () => (mounted = false);
+    return () => {
+      mounted = false;
+    };
   }, [reset, forgotpassissuccess]);
   const handleCurrentPassword = useCallback(
     value => {
@@ -213,7 +216,11 @@ const ResetPassword = () => {
             justifyContent: 'flex-end',
             marginBottom: 36,
           }}>
-          <CustomSnackBar show={isVisible} message={message} />
+          <CustomAlert
+            title={'Change Password'}
+            show={isVisible}
+            message={message}
+          />
         </View>
       </SafeAreaView>
     </Card>
@@ -238,7 +245,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     paddingBottom: 20,
 
-    height: 50,
+    height: 55,
     backgroundColor: '#623256',
     borderRadius: 20,
     borderWidth: 3,

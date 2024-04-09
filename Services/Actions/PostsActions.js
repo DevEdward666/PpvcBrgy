@@ -11,6 +11,7 @@ import {
   GET_POSTS_reactions,
   GET_POSTS_PK,
 } from '../Types/PostsTypes';
+
 export const action_get_user_posts = () => async dispatch => {
   //   var url = `${settings.BASE_URL}/api/user/currentUser`;
   var url = `${settings.BASE_URL}/api/postsMobile/getUserPosts`;
