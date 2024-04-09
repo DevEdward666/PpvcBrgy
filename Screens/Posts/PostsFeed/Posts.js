@@ -526,7 +526,7 @@ const Posts = () => {
                       {item.title}
                     </Text>
                   </View>
-                  <View style={{width: '100%', height: screenHeight - 500}}>
+                  <View style={{width: '100%', height: screenHeight - 600}}>
                     <ImageBackground
                       source={item.upload_files.map(item => {
                         return {

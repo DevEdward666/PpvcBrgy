@@ -9,6 +9,7 @@ import {
   Text,
   TouchableHighlight,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import {Card} from 'react-native-elements';
 import {ScrollView} from 'react-native-gesture-handler';
@@ -168,6 +169,7 @@ const MeScreen = () => {
     //Actions.profile();
   }, []);
   const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
+  console.log(users_reducers);
   useEffect(() => {
     let mounted = true;
     const getprem_image = async () => {
@@ -222,26 +224,30 @@ const MeScreen = () => {
                     source={{uri: getImage, scale: 1}}
                   />
                 </View>
+                {users_reducers.last_name !== undefined ? (
                 <View
                   style={{
                     width: '60%',
                     height: 100,
                     justifyContent: 'center',
                   }}>
-                  <Text style={{textAlign: 'justify', fontSize: 22}}>
-                    {users_reducers.last_name}
-                    {','}
-                    {users_reducers.first_name}
-                  </Text>
+                    <Text style={{textAlign: 'justify', fontSize: 22}}>
+                      {users_reducers.last_name}
+                      {','}
+                      {users_reducers.first_name}
+                    </Text>
                   <Text
                     style={{
                       textAlign: 'justify',
                       fontSize: 16,
                       textTransform: 'capitalize',
                     }}>
-                    {users_reducers.user_type}
+                    {users_reducers?.user_type}
                   </Text>
                 </View>
+                 ): (
+                  <ActivityIndicator  style={{width:"40%"}} size="large" />
+                )}
               </View>
             </Card>
           </TouchableHighlight>

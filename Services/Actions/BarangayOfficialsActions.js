@@ -15,6 +15,7 @@ export const action_get_barangay_officials_list = () => async (dispatch) => {
     },
   });
   const parseData = await fetchdata.json();
+  console.log(parseData)
   if (parseData.status != 400) {
     if (parseData.success != false) {
       dispatch({

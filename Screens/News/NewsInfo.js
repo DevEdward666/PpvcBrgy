@@ -34,6 +34,7 @@ import moment from 'moment';
 import {Card} from 'react-native-elements';
 import CustomBottomSheet from '../../Plugins/CustomBottomSheet';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
+import settings from '../../settings.json';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 const UINews = () => {
   const [offset, setoffset] = useState(10);

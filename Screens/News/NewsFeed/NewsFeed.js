@@ -40,6 +40,7 @@ import styles from './style';
 import {useNavigation} from '@react-navigation/native';
 import {HelperText} from 'react-native-paper';
 import Carousel, {ParallaxImage} from 'react-native-snap-carousel';
+import settings from '../../../settings.json';
 const NewsFeed = () => {
   const news_reducers = useSelector(state => state.NewsReducers.data);
   const base_url = useSelector(state => state.NewsReducers.base_url);

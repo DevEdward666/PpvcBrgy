@@ -44,6 +44,7 @@ import Dateconverter from '../../Plugins/Dateconverter';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 import CustomFlexBox from '../../Plugins/CustomFlexBox';
 import {HelperText} from 'react-native-paper';
+import settings from '../../settings.json';
 const MeInfo = () => {
   const users_reducers = useSelector(state => state.UserInfoReducers.data);
   const user_posts = useSelector(state => state.PostsReducers.posts_user_data);
@@ -399,19 +400,20 @@ const MeInfo = () => {
                         {item.title}
                       </Text>
                     </View>
-                    <View style={{width: '100%', height: screenHeight - 500}}>
+                    <View style={{width: '100%', height: screenHeight - 600}}>
                       <ImageBackground
                         source={item.upload_files?.map(item => {
                           return {
                             uri: `${settings.BASE_URL}/${item.file_path}`,
-                            width: 400,
+                            width: 100,
                             height: 100,
                           };
                         })}
                         style={{
+                          display:"flex",
                           width: '100%',
                           height: '100%',
-                          flex: 1,
+                          flex:1,
                           resizeMode: 'cover',
                           justifyContent: 'center',
                         }}></ImageBackground>

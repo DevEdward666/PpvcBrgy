@@ -38,6 +38,7 @@ import {
 import {Divider} from 'react-native-elements/dist/divider/Divider';
 import styles from './style';
 import {useNavigation} from '@react-navigation/native';
+import settings from '../../../settings.json';
 const PostsInfo = () => {
   const posts_info = useSelector(state => state.PostsReducers.posts_info);
 
@@ -170,7 +171,6 @@ const PostsInfo = () => {
     velocityThreshold: 0.3,
     directionalOffsetThreshold: 1000,
   };
-  console.log(posts_comments);
   return (
     // <ImageBackground
     // style={{flex: 1}}

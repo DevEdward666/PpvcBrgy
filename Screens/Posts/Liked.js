@@ -16,6 +16,7 @@ import {
   action_posts_add_comment,
 } from '../../Services/Actions/PostsActions';
 import styles from './styles';
+import settings from '../../settings.json';
 const UILiked = ({item}) => {
   const posts_comments = useSelector(
     state => state.PostsReducers.posts_comments,

@@ -19,7 +19,7 @@ const BarangayOfficials = () => {
   const brgyofficiallist = useSelector(
     state => state.BarangayOfficialReducers.data_barangay,
   );
-
+console.log(brgyofficiallist)
   return (
     <ScrollView style={{height: screenHeight}}>
       <SafeAreaView style={{height: screenHeight}}>

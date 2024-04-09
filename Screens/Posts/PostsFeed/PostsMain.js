@@ -5,6 +5,7 @@ import {action_get_posts} from '../../../Services/Actions/PostsActions';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Posts from './Posts';
 import styles from './style';
+
 function PostsMain(props) {
   const posts_reducers = useSelector(state => state.PostsReducers.posts_data);
   const dispatch = useDispatch();
