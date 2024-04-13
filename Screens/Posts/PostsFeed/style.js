@@ -40,9 +40,11 @@ const styles = StyleSheet.create({
   },
   containerclose: {
     paddingRight: 16,
-    marginBottom: 10,
+    marginTop: 20,
+    marginBottom: 50,
     maxHeight: 1000,
     alignItems: 'flex-end',
+    color: '#464746',
   },
   containercomment: {
     paddingVertical: 12,

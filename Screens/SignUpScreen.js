@@ -649,6 +649,10 @@ const SignUpScreen = () => {
     velocityThreshold: 0.5,
     directionalOffsetThreshold: 80,
   };
+  const handleMobileNo =(text)=> {
+    text.replace(/[^0-9]/g, '');
+    setmobile(text)
+  }
   return (
     <Card containerStyle={styles.plate}>
       <ScrollView>
@@ -1131,8 +1135,10 @@ const SignUpScreen = () => {
                       },
                     }}
                     mode="flat"
-                    onChangeText={text => setmobile(text)}
+                    keyboardType='numeric'
+                    onChangeText={text => handleMobileNo(text)}
                     label="Mobile No."
+                    maxLength={11}
                     value={mobile}
                   />
                   {/* <Input

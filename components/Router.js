@@ -18,11 +18,12 @@ import ResetPassword from '../Screens/Me/ResetPassword';
 import UpdateInfo from '../Screens/Me/UpdateInfo';
 import Settings from '../Screens/Me/Settings';
 import Family_Members from '../Screens/Me/Family/Family_Members';
+import {navigationRef} from './RootNavigation';
 const Stack = createNativeStackNavigator();
 
 const RouterHook = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer ref={navigationRef}>
       <Stack.Navigator initialRouteName="Home">
         <Stack.Screen
           name="Home"

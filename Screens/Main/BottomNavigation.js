@@ -21,7 +21,8 @@ import io from 'socket.io-client';
 import {useNavigation} from '@react-navigation/native';
 import {compose} from 'redux';
 import CustomSnackBar from '../../Plugins/CustomSnackBar';
-import settings from '../../settings.json'; 
+import settings from '../../settings.json';
+import {useBackHandler} from '@react-native-community/hooks';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -195,6 +196,18 @@ function BottomNavigation() {
     mounted && netinfo();
     return () => (mounted = false);
   }, [dispatch, isConnected, users_reducers.new_user]);
+  useBackHandler(async () => {
+    if (navigation.canGoBack()) {
+      const val = await AsyncStorage.getItem('tokenizer');
+      if (val !== null) {
+        navigation.navigate('Dashboard');
+      } else {
+        navigation.navigate('Home');
+      }
+      return true;
+    }
+    return false;
+  });
   return (
     <View>
       {/* <CustomNotification

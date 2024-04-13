@@ -1,60 +1,41 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useCallback, useEffect, useState} from 'react';
 import {
+  BackHandler,
   Dimensions,
   FlatList,
+  Image,
+  ImageBackground,
+  KeyboardAvoidingView,
+  Modal,
   RefreshControl,
   SafeAreaView,
-  StyleSheet,
-  TouchableHighlight,
-  Image,
-  View,
-  ImageBackground,
-  TouchableNativeFeedback,
-  BackHandler,
-  Text,
   ScrollView,
-  Modal,
+  Text,
+  TouchableHighlight,
+  TouchableNativeFeedback,
+  View,
 } from 'react-native';
 
-import {SafeAreaProvider} from 'react-native-safe-area-context';
 import DocumentPicker from 'react-native-document-picker';
+import {Badge, Button, Card, withBadge} from 'react-native-elements';
 import Icons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {
-  Button,
-  ButtonGroup,
-  Badge,
-  Icon,
-  withBadge,
-  Card,
-} from 'react-native-elements';
 import styles from './style';
-import FBGrid from 'react-native-fb-image-grid';
-import FBCollage from 'react-native-fb-collage';
-import PhotoGrid from 'react-native-thumbnail-grid';
-import Spinner from 'react-native-loading-spinner-overlay';
 //import Card from 'react-native-rn-Card';
 //import {Actions} from 'react-native-router-flux';
+import {useNavigation} from '@react-navigation/native';
+import {TextInput} from 'react-native-gesture-handler';
+import {HelperText} from 'react-native-paper';
+import {swipeDirections} from 'react-native-swipe-gestures';
 import {useDispatch, useSelector} from 'react-redux';
-import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
-import wait from '../../../Plugins/waitinterval';
 import {
   action_get_posts,
   action_get_posts_comments,
-  action_set_posts_reactions,
   action_posts_add_comment,
   action_set_posts,
   action_set_posts_pk,
 } from '../../../Services/Actions/PostsActions';
-import CustomBottomSheet from '../../../Plugins/CustomBottomSheet';
-import {TextInput} from 'react-native-gesture-handler';
-import CustomFlexBox from '../../../Plugins/CustomFlexBox';
-import {HelperText} from 'react-native-paper';
-import CustomBottomSheetV2 from '../../../Plugins/CustomBottomSheetV2';
+import settings from '../../../settings.json';
 import UILiked from '../Liked';
-import moment from 'moment';
-import {useNavigation} from '@react-navigation/native';
-import settings from '../../../settings.json'; 
 const Posts = () => {
   const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
   var IMAGES_PER_ROW = 3;
@@ -287,13 +268,11 @@ const Posts = () => {
         </View>
       </View>
 
-      <Modal
-        visible={addpostVisible}
-        style={{margin: 0, justifyContent: 'flex-end'}}>
+      <Modal avoidKeyboard visible={addpostVisible}>
         {/* <GestureRecognizer
           onSwipe={(direction, state) => onSwipeAddPost(direction, state)}
           config={config}> */}
-        <SafeAreaView>
+        <View style={{display: 'flex', flexDirection: 'column'}}>
           <View style={styles.containerclose}>
             <TouchableHighlight
               onPress={() => setaddpostVisible(false)}
@@ -303,6 +282,7 @@ const Posts = () => {
           </View>
           <View
             style={{
+              display: 'flex',
               flexDirection: 'row',
               justifyContent: 'space-around',
               alignItems: 'center',
@@ -318,19 +298,22 @@ const Posts = () => {
               />
             </View>
           </View>
-          <View
+          <KeyboardAvoidingView
             style={{
-              flexDirection: 'column',
-              justifyContent: 'space-around',
+              flex: 1,
+              justifyContent: 'space-between',
               alignItems: 'center',
               padding: 10,
               marginBottom: 50,
-            }}>
+            }}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 100} // Adjust the offset as needed
+          >
             <View
               style={{
                 width: '100%',
                 height: 50,
-                marginTop: 10,
+                marginTop: 50,
                 marginStart: 25,
                 marginBottom: 15,
               }}>
@@ -370,6 +353,7 @@ const Posts = () => {
                   borderColor: '#cdced1',
                   padding: 20,
                   fontSize: 16,
+                  color: '#464746',
                 }}
                 multiline
                 placeholder="What's on your mind"
@@ -444,8 +428,8 @@ const Posts = () => {
                 </View>
               </View>
             </View>
-          </View>
-        </SafeAreaView>
+          </KeyboardAvoidingView>
+        </View>
         {/* </GestureRecognizer> */}
       </Modal>
 

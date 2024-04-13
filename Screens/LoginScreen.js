@@ -1,28 +1,39 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useCallback, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {Image, StyleSheet, Text, TouchableHighlight, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 //import {Actions} from 'react-native-router-flux';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {TextInput} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {action_Login_user} from '../Services/Actions/LoginAction';
+import Spinner from 'react-native-loading-spinner-overlay';
 const LoginScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [spinner, setspinner] = useState(false);
   const navigation = useNavigation();
+  const route = useRoute();
   const dispatch = useDispatch();
   const handleSubmit = useCallback(async () => {
+    setspinner(true);
     if (username.trim() === '' || password.trim() === '') {
       alert('username/password is empty');
     } else {
-      await dispatch(action_Login_user(username.trim(), password)).then(res => {
-        console.log(res);
-        if (res) {
-          navigation.navigate('Dashboard');
-        }
-      });
+      setspinner(true);
+      dispatch(action_Login_user(username.trim(), password))
+        .then(res => {
+          if (res) {
+            setUsername('');
+            setPassword('');
+            navigation.navigate('Dashboard');
+          }
+        })
+        .catch(err => {
+          alert('username/password is incorrect');
+        });
     }
+    setspinner(false);
   }, [dispatch, username, password]);
   const goToSignup = useCallback(() => {
     navigation.navigate('Sign up');
@@ -33,6 +44,7 @@ const LoginScreen = () => {
     //Actions.resetpassword();
   }, []);
   AsyncStorage.getItem('tokenizer').then(item => {
+    console.log('TOKEN', item);
     if (item !== null) {
       navigation.navigate('Dashboard');
       //Actions.index();
@@ -41,6 +53,11 @@ const LoginScreen = () => {
 
   return (
     <SafeAreaView style={styles.plate}>
+      <Spinner
+        visible={spinner}
+        textContent={'Loading...'}
+        textStyle={styles.spinnerTextStyle}
+      />
       <Image
         source={require('../assets/icons/applogo.jpg')}
         resizeMode="contain"
