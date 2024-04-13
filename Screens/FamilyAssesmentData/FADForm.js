@@ -339,13 +339,14 @@ const FADForm = () => {
       mounted = false;
     };
   }, [dispatch, residents_issuccess]);
-  const handleSecondInfo = useCallback(async () => {}, []);
+  const handleSecondInfo = useCallback(async () => {
+    setInfoError(false);
+  }, []);
   const handleThirdInfo = useCallback(async () => {
-    await setInfoError(false);
+    setInfoError(false);
   }, []);
   const handleFourthInfo = useCallback(async () => {
-    onRefresh();
-    await setInfoError(false);
+    setInfoError(false);
   }, []);
   const handleNextInfo = useCallback(async () => {
     setPeopleInsidetheHouse([]);
@@ -429,7 +430,6 @@ const FADForm = () => {
       if (
         waterconnection.some(existingItem => existingItem.label === item.label)
       ) {
-        console.log('im here');
         setwaterconnection(prev =>
           prev.filter(existingItem => existingItem.label !== item.label),
         );
@@ -437,7 +437,6 @@ const FADForm = () => {
           prev.filter(existingItem => existingItem !== item.label),
         );
       } else {
-        console.log('im here2');
         setwaterconnection(prev => [
           ...prev,
           {label: item.label, value: item.label},
@@ -447,6 +446,7 @@ const FADForm = () => {
     },
     [waterconnection, waterconnectionsaver],
   );
+  console.log('waterconnectionsaver', waterconnectionsaver);
   const handleCheckBoxKasilyas = useCallback(
     async (selection, item) => {
       if (

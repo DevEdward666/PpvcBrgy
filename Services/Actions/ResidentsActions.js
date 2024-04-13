@@ -1,4 +1,4 @@
-import settings from '../../settings.json'; 
+import settings from '../../settings.json';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 //import {Actions} from 'react-native-router-flux';
 import {
@@ -220,7 +220,25 @@ export const action_addfamily =
       }),
     });
     const parseData = await fetchdata.json();
-
+    console.log(
+      JSON.stringify({
+        ulo_pamilya: resident_pk,
+        okasyon_balay: okasyon_balay,
+        straktura: straktura,
+        kadugayon_pagpuyo: kadugayon_pagpuyo,
+        okasyon_yuta: okasyon_yuta,
+        kaligon_balay: kaligon_balay,
+        tinubdan_tubig: waterconnection,
+        matang_kasilyas: hasComfortRoom,
+        pasilidad_kuryente: hasLightConnection,
+        matang_basura: wastemanagement,
+        kahimtanang_komunidad: kahimtang_komunidad,
+        biktima_pangabuso: victimofabuse,
+        serbisyo_nadawat: serbisyo,
+        fam_members: fam_member,
+      }),
+    );
+    console.log('Family Submit', parseData);
     if (parseData.success != false) {
       dispatch({
         type: GET_RESIDENTS_ISSUCCESS,

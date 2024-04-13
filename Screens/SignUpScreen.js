@@ -31,7 +31,7 @@ const SignUpScreen = () => {
   const [lastname, setlastname] = useState('');
   const [gender, setgender] = useState('');
   const [suffix, setSuffix] = useState('');
-  const [mobile, setmobile] = useState('63');
+  const [mobile, setmobile] = useState('');
   const [email, setemail] = useState('');
   const [birthdate, setbirthdate] = useState('');
   const [city, setcity] = useState('');
@@ -288,11 +288,8 @@ const SignUpScreen = () => {
       nationality == '' ||
       religion == '' ||
       civilstatus == '' ||
-      dialect == '' ||
-      tribe == '' ||
       disability == '' ||
       purok == '' ||
-      HouseIncome == '' ||
       houseownedby == ''
     ) {
       setAddressError(true);
@@ -370,7 +367,7 @@ const SignUpScreen = () => {
     setdisablity(value);
   });
   const handleJobSpecs = useCallback(value => {
-    if (value.lenght > 4) {
+    if (value.length > 4) {
       setisemployed('y');
     } else {
       setisemployed('n');
@@ -649,10 +646,10 @@ const SignUpScreen = () => {
     velocityThreshold: 0.5,
     directionalOffsetThreshold: 80,
   };
-  const handleMobileNo =(text)=> {
+  const handleMobileNo = text => {
     text.replace(/[^0-9]/g, '');
-    setmobile(text)
-  }
+    setmobile(text);
+  };
   return (
     <Card containerStyle={styles.plate}>
       <ScrollView>
@@ -1135,7 +1132,7 @@ const SignUpScreen = () => {
                       },
                     }}
                     mode="flat"
-                    keyboardType='numeric'
+                    keyboardType="numeric"
                     onChangeText={text => handleMobileNo(text)}
                     label="Mobile No."
                     maxLength={11}
