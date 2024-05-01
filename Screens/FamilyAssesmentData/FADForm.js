@@ -768,21 +768,21 @@ const FADForm = () => {
       dispatch(action_get_residents_list(searchvalue));
       if (mounted) {
         setspinner(true);
-        setwaterconnection([]);
-        setwaterconnectionsaver([]);
-        sethasLightConnection([]);
-        sethasLightConnectionsaver([]);
-        sethasComfortRoom([]);
-        sethasComfortRoomsaver([]);
-        setwastemanagement([]);
-        setwastemanagementsaver([]);
-        setvictimofabuse([]);
-        setvictimofabusesaver([]);
-        setkahimtangsakomunidad([]);
-        setkahimtangsakomunidadsaver([]);
-        setserbisyo([]);
-        setserbisyosaver([]);
-        setCheckedWaterConnection({});
+        // setwaterconnection([]);
+        // setwaterconnectionsaver([]);
+        // sethasLightConnection([]);
+        // sethasLightConnectionsaver([]);
+        // sethasComfortRoom([]);
+        // sethasComfortRoomsaver([]);
+        // setwastemanagement([]);
+        // setwastemanagementsaver([]);
+        // setvictimofabuse([]);
+        // setvictimofabusesaver([]);
+        // setkahimtangsakomunidad([]);
+        // setkahimtangsakomunidadsaver([]);
+        // setserbisyo([]);
+        // setserbisyosaver([]);
+        // setCheckedWaterConnection({});
 
         if (searchvalue === '') {
           setsearchvalue(null);
