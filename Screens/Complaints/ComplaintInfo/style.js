@@ -9,7 +9,7 @@ const styles = StyleSheet.create({
   },
   safeareaviewcontainer: {
     flex: 1,
-    paddingTop: 10,
+    padding: 10,
   },
   fab: {
     position: 'absolute',
@@ -47,15 +47,20 @@ const styles = StyleSheet.create({
     marginStart: 25,
   },
   bodyText: {
+    padding:10,
     color: 'black',
-    fontSize: 14,
+    fontSize: 18,
     marginTop: 10,
     textAlign: 'justify',
   },
   texttime: {
     color: 'black',
     fontSize: 10,
-    marginTop: 50,
+    marginTop: 30,
+  },
+  statusText: {
+    fontSize: 12,
+    marginTop: 30,
   },
   HeaderText: {
     color: 'black',
@@ -64,6 +69,7 @@ const styles = StyleSheet.create({
     textAlign: 'justify',
   },
   Titletext: {
+    padding:10,
     color: 'black',
     fontSize: 16,
     textAlign: 'justify',

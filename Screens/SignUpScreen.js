@@ -651,7 +651,6 @@ const SignUpScreen = () => {
     setmobile(text);
   };
   return (
-    <Card containerStyle={styles.plate}>
       <ScrollView>
         <View style={styles.container}>
           <CustomAlert
@@ -659,7 +658,6 @@ const SignUpScreen = () => {
             message={alertmessage}
             show={alertshow}
           />
-          <View style={{flex: 1}}>
             <ProgressSteps
               activeLabelColor="#623256"
               activeStepNumColor="#623256"
@@ -714,6 +712,7 @@ const SignUpScreen = () => {
 
                 <View style={styles.Inputcontainer}>
                   <TextInput
+                  style={{margin:5}}
                     theme={{
                       colors: {
                         primary: '#3eb2fa',
@@ -735,6 +734,7 @@ const SignUpScreen = () => {
                   defaultValue={firstname}
                 /> */}
                   <TextInput
+                    style={{margin:5}}
                     theme={{
                       colors: {
                         primary: '#3eb2fa',
@@ -756,6 +756,7 @@ const SignUpScreen = () => {
                   defaultValue={middlename}
                 /> */}
                   <TextInput
+                    style={{margin:5}}
                     theme={{
                       colors: {
                         primary: '#3eb2fa',
@@ -777,6 +778,7 @@ const SignUpScreen = () => {
                   defaultValue={lastname}
                 /> */}
                   <TextInput
+                    style={{margin:5}}
                     theme={{
                       colors: {
                         primary: '#3eb2fa',
@@ -813,6 +815,7 @@ const SignUpScreen = () => {
                         }}
                         onPress={showDatepicker}>
                         <TextInput
+                          style={{margin:5}}
                           theme={{
                             colors: {
                               primary: '#3eb2fa',
@@ -945,6 +948,7 @@ const SignUpScreen = () => {
                   defaultValue={religion}
                 /> */}
                   <Picker
+                  
                     selectedValue={civilstatus}
                     style={styles.PickerContainer}
                     onValueChange={(itemValue, itemIndex) =>
@@ -957,6 +961,7 @@ const SignUpScreen = () => {
                     <Picker.Item label="Divorced" value="divorced" />
                   </Picker>
                   <TextInput
+                    style={{margin:5}}
                     theme={{
                       colors: {
                         primary: '#3eb2fa',
@@ -978,6 +983,7 @@ const SignUpScreen = () => {
                   defaultValue={dialect}
                 /> */}
                   <TextInput
+                   style={{margin:5}}
                     theme={{
                       colors: {
                         primary: '#3eb2fa',
@@ -1049,6 +1055,7 @@ const SignUpScreen = () => {
                   defaultValue={jobspecs}
                 /> */}
                   <TextInput
+                   style={{margin:5}}
                     theme={{
                       colors: {
                         primary: '#3eb2fa',
@@ -1101,6 +1108,7 @@ const SignUpScreen = () => {
                 onSubmit={handleSubmitCredentials}>
                 <View style={styles.Inputcontainer}>
                   <TextInput
+                   style={{margin:5}}
                     theme={{
                       colors: {
                         primary: '#3eb2fa',
@@ -1124,6 +1132,7 @@ const SignUpScreen = () => {
                   defaultValue={email}
                 /> */}
                   <TextInput
+                   style={{margin:5}}
                     theme={{
                       colors: {
                         primary: '#3eb2fa',
@@ -1557,9 +1566,7 @@ const SignUpScreen = () => {
                   */}
             </ProgressSteps>
           </View>
-        </View>
       </ScrollView>
-    </Card>
   );
 };
 
@@ -1577,6 +1584,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
+    padding:10
   },
   touchablecontainer: {
     flex: 6,

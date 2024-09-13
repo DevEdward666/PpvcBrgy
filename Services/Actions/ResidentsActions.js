@@ -304,7 +304,7 @@ export const action_updatefamily =
       });
     }
   };
-export const action_upadatenewuser = user_pk => async dispatch => {
+export const action_upadatenewuser = (user_pk,update) => async dispatch => {
   var url = `${settings.BASE_URL}/api/residentmobile/upadatenewuser`;
   const token = await AsyncStorage.getItem('tokenizer');
   const bearer_token = token;
@@ -319,6 +319,7 @@ export const action_upadatenewuser = user_pk => async dispatch => {
     },
     body: JSON.stringify({
       user_pk: user_pk,
+      update:update,
     }),
   });
   const parseData = await fetchdata.json();

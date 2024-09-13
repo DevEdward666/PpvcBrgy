@@ -794,102 +794,102 @@ const FADForm = () => {
           setspinner(false);
           setisDisabled(false);
         } else {
-          setisDisabled(true);
+          setisDisabled(false);
           setspinner(true);
 
-          const residentFormData = resident_form?.data;
+          // const residentFormData = resident_form?.data;
 
-          const {
-            tinubdan_tubig,
-            pasilidad_kuryente,
-            matang_kasilyas,
-            matang_basura,
-            biktima_pangabuso,
-            kahimtanang_komunidad,
-            serbisyo_nadawat,
-          } = residentFormData;
+          // const {
+          //   tinubdan_tubig,
+          //   pasilidad_kuryente,
+          //   matang_kasilyas,
+          //   matang_basura,
+          //   biktima_pangabuso,
+          //   kahimtanang_komunidad,
+          //   serbisyo_nadawat,
+          // } = residentFormData;
 
-          if (residentFormData) {
-            // Function to update state and saver
-            const updateFieldData = (field, setFunc, setSaverFunc) => {
-              if (field) {
-                field.map(item => {
-                  setFunc(prev => [
-                    ...prev,
-                    {label: item, value: item},
-                    item, // Append the item directly to the saver array
-                  ]);
-                });
-              }
-            };
+          // if (residentFormData) {
+          //   // Function to update state and saver
+          //   const updateFieldData = (field, setFunc, setSaverFunc) => {
+          //     if (field) {
+          //       field.map(item => {
+          //         setFunc(prev => [
+          //           ...prev,
+          //           {label: item, value: item},
+          //           item, // Append the item directly to the saver array
+          //         ]);
+          //       });
+          //     }
+          //   };
 
-            setOccationofthehouse(residents_data_exist.data[0].okasyon_balay);
-            setOccationfortheland(residents_data_exist.data[0].okasyon_yuta);
-            setStructure(residents_data_exist.data[0].straktura);
-            setQualityness(residents_data_exist.data[0].kaligon_balay);
-            setyearsstayed('' + residents_data_exist.data[0].kadugayon_pagpuyo);
+          //   setOccationofthehouse(residents_data_exist.data[0].okasyon_balay);
+          //   setOccationfortheland(residents_data_exist.data[0].okasyon_yuta);
+          //   setStructure(residents_data_exist.data[0].straktura);
+          //   setQualityness(residents_data_exist.data[0].kaligon_balay);
+          //   setyearsstayed('' + residents_data_exist.data[0].kadugayon_pagpuyo);
 
-            updateFieldData(
-              tinubdan_tubig,
-              setwaterconnection,
-              setwaterconnectionsaver,
-            );
-            updateFieldData(
-              pasilidad_kuryente,
-              sethasLightConnection,
-              sethasLightConnectionsaver,
-            );
-            updateFieldData(
-              matang_kasilyas,
-              sethasComfortRoom,
-              sethasComfortRoomsaver,
-            );
-            updateFieldData(
-              matang_basura,
-              setwastemanagement,
-              setwastemanagementsaver,
-            );
-            updateFieldData(
-              biktima_pangabuso,
-              setvictimofabuse,
-              setvictimofabusesaver,
-            );
-            updateFieldData(
-              kahimtanang_komunidad,
-              setkahimtangsakomunidad,
-              setkahimtangsakomunidadsaver,
-            );
-            serbisyo_nadawat.map(item => {
-              let agency = '';
-              if (item.programa === 'Scholarship') {
-                setscholarship(item.ahensya);
-              } else if (item.programa === 'Livelihood') {
-                setlivelihood(item.ahensya);
-              } else if (item.programa === 'Housing') {
-                sethouseing(item.ahensya);
-              } else if (item.programa === 'Financial') {
-                setfinancial(item.ahensya);
-              } else if (item.programa === 'Lingap') {
-                setlingap(item.ahensya);
-              } else if (item.programa === 'Medical nga Tabang') {
-                setmedicalngatabang(item.ahensya);
-              } else if (item.programa === 'Day Care Service') {
-                setdaycareservice(item.ahensya);
-              } else if (item.programa === 'Skill Training') {
-                setskilltraining(item.ahensya);
-              } else if (item.programa === 'Employment') {
-                setEmployment(item.ahensya);
-              }
-              setserbisyo(prev => [
-                ...prev,
-                {label: item.programa, value: item.programa},
-              ]);
-              setserbisyosaver(prev => [
-                ...prev,
-                {programa: item.programa, ahensya: item.ahensya},
-              ]);
-            });
-          }
+          //   updateFieldData(
+          //     tinubdan_tubig,
+          //     setwaterconnection,
+          //     setwaterconnectionsaver,
+          //   );
+          //   updateFieldData(
+          //     pasilidad_kuryente,
+          //     sethasLightConnection,
+          //     sethasLightConnectionsaver,
+          //   );
+          //   updateFieldData(
+          //     matang_kasilyas,
+          //     sethasComfortRoom,
+          //     sethasComfortRoomsaver,
+          //   );
+          //   updateFieldData(
+          //     matang_basura,
+          //     setwastemanagement,
+          //     setwastemanagementsaver,
+          //   );
+          //   updateFieldData(
+          //     biktima_pangabuso,
+          //     setvictimofabuse,
+          //     setvictimofabusesaver,
+          //   );
+          //   updateFieldData(
+          //     kahimtanang_komunidad,
+          //     setkahimtangsakomunidad,
+          //     setkahimtangsakomunidadsaver,
+          //   );
+          //   serbisyo_nadawat.map(item => {
+          //     let agency = '';
+          //     if (item.programa === 'Scholarship') {
+          //       setscholarship(item.ahensya);
+          //     } else if (item.programa === 'Livelihood') {
+          //       setlivelihood(item.ahensya);
+          //     } else if (item.programa === 'Housing') {
+          //       sethouseing(item.ahensya);
+          //     } else if (item.programa === 'Financial') {
+          //       setfinancial(item.ahensya);
+          //     } else if (item.programa === 'Lingap') {
+          //       setlingap(item.ahensya);
+          //     } else if (item.programa === 'Medical nga Tabang') {
+          //       setmedicalngatabang(item.ahensya);
+          //     } else if (item.programa === 'Day Care Service') {
+          //       setdaycareservice(item.ahensya);
+          //     } else if (item.programa === 'Skill Training') {
+          //       setskilltraining(item.ahensya);
+          //     } else if (item.programa === 'Employment') {
+          //       setEmployment(item.ahensya);
+          //     }
+          //     setserbisyo(prev => [
+          //       ...prev,
+          //       {label: item.programa, value: item.programa},
+          //     ]);
+          //     setserbisyosaver(prev => [
+          //       ...prev,
+          //       {programa: item.programa, ahensya: item.ahensya},
+          //     ]);
+          //   });
+          // }
 
           setspinner(false);
 
@@ -958,7 +958,6 @@ const FADForm = () => {
     // resizeMode="cover"
     // blurRadius={20}>
     // <Card containerStyle={styles.plate}>
-    <Card containerStyle={styles.plate}>
       <ScrollView style={{height: screenHeight}} nestedScrollEnabled={true}>
         <Spinner
           visible={spinner}
@@ -990,6 +989,7 @@ const FADForm = () => {
                 errors={InfoError}>
                 <View style={styles.Inputcontainer}>
                   <TextInput
+                    style={{margin:5}}
                     disabled={true}
                     theme={{
                       colors: {
@@ -1003,6 +1003,7 @@ const FADForm = () => {
                     value={users_reducers.first_name}
                   />
                   <TextInput
+                   style={{margin:5}}
                     disabled={true}
                     theme={{
                       colors: {
@@ -1016,6 +1017,7 @@ const FADForm = () => {
                     value={users_reducers.middle_name}
                   />
                   <TextInput
+                   style={{margin:5}}
                     disabled={true}
                     theme={{
                       colors: {
@@ -1092,6 +1094,7 @@ const FADForm = () => {
                       />
                     </Picker>
                     <TextInput
+                     style={{margin:5}}
                       disabled={isDisabled}
                       theme={{
                         colors: {
@@ -1268,6 +1271,7 @@ const FADForm = () => {
                     fontWeight: '700',
                     fontSize: 14,
                     textAlign: 'left',
+                    padding:10
                   }}>
                   Note: Palihug ug sulat daan sa ahensya bag.o i tuplok ang
                   serbisyo
@@ -1284,6 +1288,7 @@ const FADForm = () => {
                       Serbisyo
                     </Text>
                     <SelectMultiple
+                      style={{padding:5}}
                       items={serbisyochecked}
                       selectedItems={serbisyo}
                       onSelectionsChange={(selections, item) =>
@@ -1302,7 +1307,7 @@ const FADForm = () => {
                       Ahensya
                     </Text>
                     <TextInput
-                      style={{height: 55}}
+                      style={{height: 50}}
                       theme={{
                         colors: {
                           primary: '#3eb2fa',
@@ -1316,7 +1321,7 @@ const FADForm = () => {
                       value={scholarship}
                     />
                     <TextInput
-                      style={{height: 55}}
+                       style={{height: 50}}
                       theme={{
                         colors: {
                           primary: '#3eb2fa',
@@ -1330,7 +1335,7 @@ const FADForm = () => {
                       value={livelihood}
                     />
                     <TextInput
-                      style={{height: 55}}
+                       style={{height: 50}}
                       theme={{
                         colors: {
                           primary: '#3eb2fa',
@@ -1344,7 +1349,7 @@ const FADForm = () => {
                       value={houseing}
                     />
                     <TextInput
-                      style={{height: 55}}
+                       style={{height: 50}}
                       theme={{
                         colors: {
                           primary: '#3eb2fa',
@@ -1358,7 +1363,7 @@ const FADForm = () => {
                       value={financial}
                     />
                     <TextInput
-                      style={{height: 55}}
+                       style={{height: 50}}
                       theme={{
                         colors: {
                           primary: '#3eb2fa',
@@ -1372,7 +1377,7 @@ const FADForm = () => {
                       value={lingap}
                     />
                     <TextInput
-                      style={{height: 55}}
+                       style={{height: 50}}
                       theme={{
                         colors: {
                           primary: '#3eb2fa',
@@ -1386,7 +1391,7 @@ const FADForm = () => {
                       value={medicalngatabang}
                     />
                     <TextInput
-                      style={{height: 55}}
+                       style={{height: 50}}
                       theme={{
                         colors: {
                           primary: '#3eb2fa',
@@ -1400,7 +1405,7 @@ const FADForm = () => {
                       value={daycareservice}
                     />
                     <TextInput
-                      style={{height: 55}}
+                       style={{height: 50}}
                       theme={{
                         colors: {
                           primary: '#3eb2fa',
@@ -1414,7 +1419,7 @@ const FADForm = () => {
                       value={skilltraining}
                     />
                     <TextInput
-                      style={{height: 55}}
+                      style={{height: 50}}
                       theme={{
                         colors: {
                           primary: '#3eb2fa',
@@ -1653,15 +1658,16 @@ const FADForm = () => {
                       }
                     />
                   </GestureRecognizer>
-
-                  <Button
-                    icon={
-                      <Icons name="arrow-right" size={20} color="#623256" />
-                    }
-                    title="Add family members"
-                    onPress={() => handleAddPeople()}>
-                    Add People
-                  </Button>
+                  <View style={{margin:20}}>
+                    <Button
+                      icon={
+                        <Icons name="arrow-right" size={10} color="#623256" />
+                      }
+                      title="Add family members"
+                      onPress={() => handleAddPeople()}>
+                      Add People
+                    </Button>
+                  </View>
                 </View>
               </ProgressStep>
             </ProgressSteps>
@@ -1672,7 +1678,6 @@ const FADForm = () => {
           <CustomSnackBar show={showsnackbar} message={submitmessage} />
         </>
       </ScrollView>
-    </Card>
     // </ImageBackground>
   );
 };
