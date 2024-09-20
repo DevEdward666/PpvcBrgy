@@ -16,10 +16,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {navigationRef} from './components/RootNavigation';
 const App = () => {
   useEffect(() => {
-    let mounted = true;
     const globalfont = async () => {
       const val = await AsyncStorage.getItem('tokenizer');
-      let fontName = 'SFUIDisplay-Medium';
+      let fontName = 'SFUIDisplay-Heavy';
       GlobalFont.applyGlobal(fontName);
       if (val !== null) {
         navigationRef.navigate('Dashboard');
@@ -27,10 +26,8 @@ const App = () => {
         navigationRef.navigate('Home');
       }
     };
-    mounted && globalfont();
-    return () => {
-      mounted = false;
-    };
+   globalfont();
+  
   }, []);
 
   return (

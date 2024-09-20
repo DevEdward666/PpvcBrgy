@@ -294,7 +294,7 @@ const MeInfo = () => {
                   source={
                     users_reducers?.pic?.length > 0 || users_reducers?.pic !== null
                       ? { uri: imageUri, scale: 1 }
-                      : defaultImages[users_reducers.gender] || defaultImages.f                  }
+                      : defaultImages[users_reducers.gender] || defaultImages.f}
                 />
             <Text
               style={{

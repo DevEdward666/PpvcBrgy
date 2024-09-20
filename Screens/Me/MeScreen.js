@@ -56,6 +56,7 @@ const MeScreen = () => {
       flex: 1,
       width: '100%',
       height: '100%',
+      // backgroundColor:"#623256"
     },
     plate: {
       flex: 1,
@@ -231,7 +232,7 @@ const MeScreen = () => {
           <TouchableHighlight
             underlayColor="#1C00ff00"
             onPress={() => gotoinfo()}>
-            <Card radius={15} backgroundColor={'#ffffff'} elevation={25}>
+            <Card containerStyle={{borderRadius:15,elevation:5}} backgroundColor={'#ffffff'} elevation={25}>
               <View style={{flexDirection: 'row'}}>
                 <View style={{width: '30%', height: 100, margin: 5}}>
                 <Image
@@ -282,7 +283,7 @@ const MeScreen = () => {
               <TouchableHighlight
                 onPress={() => gotonews()}
                 underlayColor="white">
-                <Card radius={15} backgroundColor={'#ffffff'} elevation={25}>
+                <Card containerStyle={{borderRadius:15,elevation:5}}  elevation={25}>
                   <View
                     style={{
                       flexDirection: 'column',
@@ -331,7 +332,7 @@ const MeScreen = () => {
               <TouchableHighlight
                 onPress={() => gotoposts()}
                 underlayColor="white">
-                <Card radius={15} backgroundColor={'#ffffff'} elevation={25}>
+                <Card containerStyle={{borderRadius:15,elevation:5}} backgroundColor={'#ffffff'} elevation={25}>
                   <View
                     style={{
                       flexDirection: 'column',
@@ -383,7 +384,7 @@ const MeScreen = () => {
               <TouchableHighlight
                 onPress={() => gotocomplaints()}
                 underlayColor="white">
-                <Card radius={15} backgroundColor={'#ffffff'} elevation={25}>
+                <Card containerStyle={{borderRadius:15,elevation:5}} backgroundColor={'#ffffff'} elevation={25}>
                   <View
                     style={{
                       flexDirection: 'column',
@@ -432,7 +433,7 @@ const MeScreen = () => {
               <TouchableHighlight
                 onPress={() => gotofad()}
                 underlayColor="white">
-                <Card radius={15} backgroundColor={'#ffffff'} elevation={25}>
+                <Card containerStyle={{borderRadius:15,elevation:5}} backgroundColor={'#ffffff'} elevation={25}>
                   <View
                     style={{
                       flexDirection: 'column',
@@ -483,7 +484,7 @@ const MeScreen = () => {
               <TouchableHighlight
                 onPress={() => gotobrgy()}
                 underlayColor="white">
-                <Card radius={15} backgroundColor={'#ffffff'} elevation={25}>
+                <Card containerStyle={{borderRadius:15,elevation:5}} backgroundColor={'#ffffff'} elevation={25}>
                   <View
                     style={{
                       flexDirection: 'column',
@@ -532,7 +533,7 @@ const MeScreen = () => {
               <TouchableHighlight
                 onPress={() => gotosettings()}
                 underlayColor="white">
-                <Card radius={15} backgroundColor={'#ffffff'} elevation={25}>
+                <Card containerStyle={{borderRadius:15,elevation:5}} backgroundColor={'#ffffff'} elevation={25}>
                   <View
                     style={{
                       flexDirection: 'column',
@@ -582,7 +583,7 @@ const MeScreen = () => {
               <TouchableHighlight
                 onPress={() => removeValue()}
                 underlayColor="white">
-                <Card radius={15} backgroundColor={'#ffffff'} elevation={25}>
+                <Card containerStyle={{borderRadius:15,elevation:5}} backgroundColor={'#ffffff'} elevation={25}>
                   <View
                     style={{
                       flexDirection: 'column',

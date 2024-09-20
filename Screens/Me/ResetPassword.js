@@ -139,7 +139,6 @@ const ResetPassword = () => {
     // source={require('../../assets/background/bgImage.jpg')}
     // resizeMode="cover"
     // blurRadius={20}>
-    <Card containerStyle={styles.plate}>
       <SafeAreaView style={{padding: 20, marginTop: 50}}>
         <ScrollView>
           {forgotpassword ? (
@@ -223,7 +222,6 @@ const ResetPassword = () => {
           />
         </View>
       </SafeAreaView>
-    </Card>
     // </ImageBackground>
   );
 };
