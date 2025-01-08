@@ -19,6 +19,9 @@ import UpdateInfo from '../Screens/Me/UpdateInfo';
 import Settings from '../Screens/Me/Settings';
 import Family_Members from '../Screens/Me/Family/Family_Members';
 import {navigationRef} from './RootNavigation';
+import {logo} from '../assets/icons/applogo.jpg';
+
+
 const Stack = createNativeStackNavigator();
 
 const RouterHook = () => {
@@ -38,7 +41,18 @@ const RouterHook = () => {
         <Stack.Screen
           name="Dashboard"
           component={Index}
-          options={{headerShown: false}}
+          // options={{headerShown: false}}
+          options={{
+            headerTitleStyle: {
+              color: '#ffffff',
+            },
+              headerStyle:{
+              backgroundColor:"#623256"
+            },
+            headerTintColor:"#ffffff",
+            headerBackVisible:false,
+            headerTitle:"Home",
+          }}
         />
         <Stack.Screen
           name="News"
@@ -48,10 +62,14 @@ const RouterHook = () => {
           // titleStyle={{color: '#623256'}}
           options={{
             headerTitleStyle: {
-              color: '#623256',
+              color: '#ffffff',
             },
-            headerTintColor: '#623256',
+              headerStyle:{
+              backgroundColor:"#623256"
+            },
+            headerTintColor:"#ffffff"
           }}
+          
         />
         <Stack.Screen
           name="News Info"
@@ -61,9 +79,13 @@ const RouterHook = () => {
           // navBarButtonColor="#623256"
           options={{
             headerTitleStyle: {
-              color: '#623256',
+              color: '#ffffff',
             },
-            headerTintColor: '#623256',
+               headerStyle:{
+              backgroundColor:"#623256"
+            },
+            headerTintColor:"#ffffff",
+            
           }}
         />
         <Stack.Screen
@@ -74,9 +96,12 @@ const RouterHook = () => {
           // navBarButtonColor="#623256"
           options={{
             headerTitleStyle: {
-              color: '#623256',
+              color: '#ffffff',
             },
-            headerTintColor: '#623256',
+              headerStyle:{
+              backgroundColor:"#623256"
+            },
+            headerTintColor:"#ffffff"
           }}
         />
         <Stack.Screen
@@ -87,9 +112,12 @@ const RouterHook = () => {
           // navBarButtonColor="#623256"
           options={{
             headerTitleStyle: {
-              color: '#623256',
+              color: '#ffffff',
             },
-            headerTintColor: '#623256',
+              headerStyle:{
+              backgroundColor:"#623256"
+            },
+            headerTintColor:"#ffffff"
           }}
         />
         <Stack.Screen
@@ -100,9 +128,12 @@ const RouterHook = () => {
           // navBarButtonColor="#623256"
           options={{
             headerTitleStyle: {
-              color: '#623256',
+              color: '#ffffff',
             },
-            headerTintColor: '#623256',
+              headerStyle:{
+              backgroundColor:"#623256"
+            },
+            headerTintColor:"#ffffff"
           }}
         />
         <Stack.Screen
@@ -113,9 +144,12 @@ const RouterHook = () => {
           // navBarButtonColor="#623256"
           options={{
             headerTitleStyle: {
-              color: '#623256',
+              color: '#ffffff',
             },
-            headerTintColor: '#623256',
+              headerStyle:{
+              backgroundColor:"#623256"
+            },
+            headerTintColor:"#ffffff"
           }}
         />
         <Stack.Screen
@@ -126,9 +160,12 @@ const RouterHook = () => {
           // navBarButtonColor="#623256"
           options={{
             headerTitleStyle: {
-              color: '#623256',
+              color: '#ffffff',
             },
-            headerTintColor: '#623256',
+              headerStyle:{
+              backgroundColor:"#623256"
+            },
+            headerTintColor:"#ffffff"
           }}
         />
         <Stack.Screen
@@ -149,9 +186,12 @@ const RouterHook = () => {
           // navBarButtonColor="#623256"
           options={{
             headerTitleStyle: {
-              color: '#623256',
+              color: '#ffffff',
             },
-            headerTintColor: '#623256',
+              headerStyle:{
+              backgroundColor:"#623256"
+            },
+            headerTintColor:"#ffffff"
           }}
         />
         <Stack.Screen
@@ -162,9 +202,12 @@ const RouterHook = () => {
           // navBarButtonColor="#623256"
           options={{
             headerTitleStyle: {
-              color: '#623256',
+              color: '#ffffff',
             },
-            headerTintColor: '#623256',
+              headerStyle:{
+              backgroundColor:"#623256"
+            },
+            headerTintColor:"#ffffff"
           }}
         />
 
@@ -176,9 +219,12 @@ const RouterHook = () => {
           // navBarButtonColor="#623256"
           options={{
             headerTitleStyle: {
-              color: '#623256',
+              color: '#ffffff',
             },
-            headerTintColor: '#623256',
+              headerStyle:{
+              backgroundColor:"#623256"
+            },
+            headerTintColor:"#ffffff"
           }}
         />
         <Stack.Screen
@@ -189,9 +235,12 @@ const RouterHook = () => {
           // navBarButtonColor="#623256"
           options={{
             headerTitleStyle: {
-              color: '#623256',
+              color: '#ffffff',
             },
-            headerTintColor: '#623256',
+              headerStyle:{
+              backgroundColor:"#623256"
+            },
+            headerTintColor:"#ffffff"
           }}
         />
       </Stack.Navigator>

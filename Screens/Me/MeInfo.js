@@ -66,6 +66,10 @@ const MeInfo = () => {
   const [refreshing, setRefreshing] = useState(false);
   const [post, setpost] = useState('');
   const [age, setage] = useState('');
+  const defaultImages = {
+    m: require('../../assets/default/male-profile.png'),
+    f: require('../../assets/default/female-profile.png'),
+  };
   useEffect(() => {
     let mounted = true;
 
@@ -264,11 +268,11 @@ const MeInfo = () => {
   const buttons = [{element: component1}, {element: component2}];
   const buttonliked = [{element: liked}, {element: component2}];
   const FlatListHeader = () => (
-    <Card containerStyle={styles.plate}>
+    <View containerStyle={styles.plate}>
       <View
         radius={1}
         backgroundColor={'#ffffff'}
-        style={{height: screenHeight - 550, marginBottom: 10}}>
+        style={{margin:15,padding:10,height: screenHeight - 550, marginBottom: 10}}>
         <View style={{flexDirection: 'row', justifyContent: 'center'}}>
           <View
             style={{
@@ -276,19 +280,22 @@ const MeInfo = () => {
               height: screenHeight - 450,
               textAlign: 'center',
             }}>
-            <Image
-              style={{
-                marginTop: 10,
-                marginStart: 10,
-                alignSelf: 'center',
-                width: 100,
-                height: 100,
-                borderRadius: 180 / 2,
-                overflow: 'hidden',
-                borderWidth: 3,
-              }}
-              source={{uri: imageUri, scale: 1}}
-            />
+              <Image
+                  style={{
+                    marginTop: 10,
+                    marginStart: 10,
+                    alignSelf: 'center',
+                    width: 100,
+                    height: 100,
+                    borderRadius: 180 / 2,
+                    overflow: 'hidden',
+                    borderWidth: 3,
+                  }}
+                  source={
+                    users_reducers?.pic?.length > 0 || users_reducers?.pic !== null
+                      ? { uri: imageUri, scale: 1 }
+                      : defaultImages[users_reducers.gender] || defaultImages.f}
+                />
             <Text
               style={{
                 textAlign: 'center',
@@ -317,7 +324,7 @@ const MeInfo = () => {
         type="clear"
         onPress={() => handleAddPostPress()}
       />
-    </Card>
+    </View>
   );
   return (
     // <ImageBackground
@@ -888,6 +895,7 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,355,0.5)',
     borderWidth: 0.1,
     borderRadius: 5,
+    padding:15,
   },
   containerclose: {
     paddingRight: 16,

@@ -206,7 +206,6 @@ const ComplaintsInfo = () => {
 
   return (
     <SafeAreaView style={styles.safeareaviewcontainer}>
-      <Card containerStyle={styles.plate}>
         <ScrollView>
           <View
             style={{
@@ -239,6 +238,18 @@ const ComplaintsInfo = () => {
               }}>
               <Text style={styles.Titletext}>{users_reducers.full_name}</Text>
             </View>
+          </View>
+          <View
+              style={{
+                width: '100%',
+                alignItems: 'flex-end',
+              }}>
+              <Text  style={styles.statusText}>
+                Status: 
+                <Text style={{color:complaint_info?.status?.sts_color}}>
+                  {complaint_info?.status?.sts_desc}
+                </Text>
+              </Text>
           </View>
           <View
             style={{
@@ -275,6 +286,12 @@ const ComplaintsInfo = () => {
               <Divider style={{backgroundColor: 'grey'}} />
               <Text style={styles.Titletext}>
                 Subject: {complaint_info?.title}
+              </Text>
+              <Text style={styles.Titletext}>
+                Type: {complaint_info?.type}
+              </Text>
+              <Text style={styles.Titletext}>
+                Message:
               </Text>
               <Text style={styles.bodyText}>{complaint_info?.body}</Text>
             </View>
@@ -449,8 +466,10 @@ const ComplaintsInfo = () => {
             }
           />
         </GestureRecognizer>
-      </Card>
-      <FAB style={styles.fab} icon="comment" onPress={() => onFABPress()} />
+        {complaint_info?.status?.sts_pk !=="C"? (  
+          <FAB style={styles.fab} icon="comment" onPress={() => onFABPress()} />
+        ):null}
+    
     </SafeAreaView>
 
     // </ImageBackground>

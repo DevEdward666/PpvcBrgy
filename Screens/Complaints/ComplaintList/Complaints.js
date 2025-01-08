@@ -13,6 +13,7 @@ import {
   View,
   ScrollView,
 } from 'react-native';
+import {Picker} from '@react-native-picker/picker';
 import DocumentPicker from 'react-native-document-picker';
 import {Button, Divider, Icon, Input, Card} from 'react-native-elements';
 
@@ -72,6 +73,12 @@ const Complaints = () => {
   const [singleFile, setSingleFile] = useState([]);
   const [overlaymessage, setoverlaymessage] = useState('');
   const [reported_by, setreported_by] = useState('');
+  const [others, setOther] = useState(false);
+  const [complaintType, setComplaintType] = useState("");
+  const [complaintTypeOther, setComplaintTypeOther] = useState("");
+
+  
+
   const [complaintlists, setcomplaintlist] = useState([...complaintslist]);
   const navigation = useNavigation();
   const onRefresh = useCallback(() => {
@@ -85,6 +92,7 @@ const Complaints = () => {
   useEffect(() => {
     let mounted = true;
     if (mounted) {
+      setOther(false)
       if (complaintslist.length > 0) {
         complaintlists.sort((obj1, obj2) => {
           return obj2.complaint_pk - obj1.complaint_pk;
@@ -122,8 +130,9 @@ const Complaints = () => {
       // setoverlayopen(true);
       alert('Please Fill all fields');
     } else {
+      let setComplaintType = others ? complaintTypeOther:complaintType;
       dispatch(
-        action_insert_complaints(subjecttext, complaintmessage, singleFile),
+        action_insert_complaints(subjecttext, complaintmessage,setComplaintType, singleFile),
       );
       wait(1000).then(() => {
         dispatch(action_get_complaints(users_reducers?.user_pk));
@@ -135,6 +144,9 @@ const Complaints = () => {
     overlayopen,
     subjecttext,
     complaintmessage,
+    complaintType,
+    complaintTypeOther,
+    others,
     dispatch,
     users_reducers?.user_pk,
     singleFile,
@@ -173,6 +185,17 @@ const Complaints = () => {
       }
     }
   };
+  const handleComplaintType = (val,index)=> {
+    if(index === 6){
+      setOther(true);
+    }else{
+      setOther(false);
+    }
+    setComplaintType(val)
+  }
+  const handleComplaintTypeOther =(val)=> {
+    setComplaintTypeOther(val)
+  }
   const [gestureName, setgestureName] = useState('');
 
   const onSwipe = useCallback((gestureName, gestureState) => {
@@ -360,6 +383,61 @@ const Complaints = () => {
                   />
                 </View>
               </View>
+              <View
+                style={{
+                  width: '100%',
+                }}>
+                <View
+                  style={{
+                    backgroundColor: 'white)',
+                  }}>
+                 <Picker
+                      selectedValue={complaintType}
+                      // value={Occationofthehouse}
+                      style={styles.PickerContainer}
+                      onValueChange={(itemValue, itemIndex) =>
+                        handleComplaintType(itemValue,itemIndex)
+                      }>
+                      <Picker.Item key={0} label="Noise Complaint" value="Noise Complaint" />
+                      <Picker.Item key={1} label="Harassment" value="Harassment" />
+                      <Picker.Item key={2} label="litter" value="litter" />
+                      <Picker.Item key={3} label="Unsafe streets" value="Unsafe streets" />
+                      <Picker.Item
+                        key={4}
+                        label="Domestic violence"
+                        value="Domestic violence"
+                      />
+                      <Picker.Item
+                        key={5}
+                        label="Child abuse"
+                        value="Child abuse"
+                      />
+                        <Picker.Item
+                        key={6}
+                        label="Others"
+                        value="Others"
+                      />
+                    </Picker>
+                </View>
+              </View>
+              {others?(    
+                <View
+                style={{
+                  width: '100%',
+                  paddingBottom:10
+                }}>
+                <View
+                  style={{
+                    backgroundColor: 'white)',
+                  }}>
+                  <Input
+                    placeholder="Type of Complaint"
+                    onChangeText={value => handleComplaintTypeOther(value)}
+                  />
+                </View>
+              </View>
+            ):null}
+          
               <View style={{width: '30%', height: 100, padding: 5}}>
                 <Button
                   style={{color: 'black'}}

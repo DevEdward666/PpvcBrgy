@@ -14,6 +14,7 @@ import {
   RefreshControl,
   TouchableHighlight,
   ImageBackground,
+  Alert
 } from 'react-native';
 import ImageView from 'react-native-image-viewing';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -35,6 +36,10 @@ import {Card} from 'react-native-elements';
 import CustomBottomSheet from '../../Plugins/CustomBottomSheet';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 import settings from '../../settings.json';
+import RNFetchBlob from 'rn-fetch-blob';
+import FileViewer from 'react-native-file-viewer';
+import RNFS from "react-native-fs";
+import Icons from 'react-native-vector-icons/MaterialIcons';
 const {width: screenWidth, height: screenHeight} = Dimensions.get('window');
 const UINews = () => {
   const [offset, setoffset] = useState(10);
@@ -46,7 +51,7 @@ const UINews = () => {
 
   const sheetRef = React.useRef(null);
   const [commentstate, setcommentstate] = useState(0);
-  const [heightcontrol, setheightcontrol] = useState(200);
+  const [getmime, setmime] = useState(false);
   const dispatch = useDispatch();
 
   const base_url = useSelector((state) => state.NewsReducers.base_url);
@@ -59,7 +64,9 @@ const UINews = () => {
   const [title, settitle] = useState('');
   const [body, setbody] = useState('');
   const [images, setimages] = useState([]);
-  const [count, setcount] = useState(0);
+  const [getFileName, setFilename] = useState("");
+  const [getFileType, setFileType] = useState("");
+
 
   const [isVisible, setisVisible] = useState(false);
   const ENTRIES1 = news_reducers_info?.data[0]?.upload_files;
@@ -67,13 +74,19 @@ const UINews = () => {
     await setnews_id(item);
   });
   useEffect(() => {
-    let mounted = true;
     const getnewinfo = async () => {
       await dispatch(action_get_news_info(news_id));
       await setSpinner(true);
+    };
+    getnewinfo();
+  }, [dispatch, news_id]);
+  useEffect(() => {
+    const initialize = async () => {
       if (news_reducers_info?.loading) {
-        await setSpinner(false);
         await setEntries(ENTRIES1);
+        setFilename(ENTRIES1[0]?.file_path.split("/")[3]);
+        setFileType(ENTRIES1[0]?.file_path.split(".")[1]);
+        setmime(ENTRIES1[0].mimetype.includes("image"))
         news_reducers_info?.data[0]?.upload_files.map((i) => {
           setimages((prev) => [
             ...prev,
@@ -85,19 +98,69 @@ const UINews = () => {
       }
       await setSpinner(false);
     };
-    mounted && getnewinfo();
-    return () => (mounted = false);
-  }, [dispatch, news_id]);
+    initialize();
+  }, [news_reducers_info,ENTRIES1]);
   const carouselRef = useRef(null);
 
   const goForward = () => {
     carouselRef.current.snapToNext();
   };
-  console.log(images);
-
-  const renderItem = useCallback(
-    ({item, index}, parallaxProps) => {
-      return (
+  const fileTypeIcons = {
+    pdf: 'picture-as-pdf',
+    doc: 'description',
+    docx: 'description',
+    xls: 'grid-on',
+    xlsx: 'grid-on',
+    png: 'image',
+    jpg: 'image',
+    jpeg: 'image',
+    txt: 'text-snippet',
+    zip: 'zip-file',
+    // Add more mappings as needed
+  };
+  const getFileIcon = (fileName) => {
+    const extension = fileName.toLowerCase();
+    const iconName = fileTypeIcons[extension] || 'insert-drive-file'; // Default icon if type is unknown
+    return iconName;
+  };
+  const openFile = async (item) => {
+    const fileName = item?.file_path.split("/")[3];
+    const excelFileUrl = `${settings.BASE_URL}${item?.file_path}`;
+    const downloadDest = `${RNFS.DownloadDirectoryPath}/${fileName}`;
+    try {
+      try {
+        const response = await RNFS.downloadFile({
+          fromUrl: excelFileUrl,
+          toFile: downloadDest,
+        }).promise;
+  
+        if (response.statusCode === 200) {
+          Alert.alert('Download Success', `File saved to ${downloadDest}`);
+          // await FileViewer.open(downloadDest);
+        } else {
+          Alert.alert('Download Failed', `Status Code: ${response.statusCode}`);
+        }
+      } catch (error) {
+        Alert.alert('Download Error', error.message);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  const RenderFile = useCallback(() => {
+    return (   
+    <TouchableHighlight onPress={() => openFile(ENTRIES1[0])}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', margin: 10 }}> 
+        <Icons name={getFileIcon(getFileType)} size={24} />
+        <Text style={{ marginLeft: 10 }}>{getFileName}</Text>
+      </View>
+    </TouchableHighlight>
+    )
+  },
+  [base_url,getFileName,getFileType],
+);
+  const renderItem = useCallback(({item, index}, parallaxProps) => {
+      return(
         <View style={styles.item}>
           <ParallaxImage
             source={{uri: `${settings.BASE_URL}/${item?.file_path}`}}
@@ -110,7 +173,7 @@ const UINews = () => {
           {item.filename}
         </Text> */}
         </View>
-      );
+      )
     },
     [base_url],
   );
@@ -134,13 +197,13 @@ const UINews = () => {
 
   const onRefresh = useCallback(async () => {
     setSpinner(true);
-    console.log(news_id);
     dispatch(action_get_news_info(news_id));
     if (news_reducers_info?.loading) {
       setSpinner(false);
       setEntries(ENTRIES1);
       settitle(news_reducers_info?.data[0]?.title);
       setbody(news_reducers_info?.data[0]?.body);
+      setmime(ENTRIES1[0].mimetype.includes("image"))
     }
   }, [dispatch, ENTRIES1, news_id, news_reducers_info]);
   const [gestureName, setgestureName] = useState('');
@@ -167,7 +230,6 @@ const UINews = () => {
     velocityThreshold: 0.3,
     directionalOffsetThreshold: 1000,
   };
-  console.log(news_reducers_info?.data);
   return (
     <SafeAreaView style={styles.flatlistcontainer}>
       <Spinner
@@ -193,10 +255,12 @@ const UINews = () => {
           <View
             style={{
               flexDirection: 'row',
-              height: 300,
+              height: getmime?300:50,
               alignItems: 'center',
             }}>
             <View style={styles.container}>
+              {getmime ? 
+              (
               <TouchableHighlight onPress={() => setvisible(true)}>
                 <Carousel
                   ref={carouselRef}
@@ -209,6 +273,10 @@ const UINews = () => {
                   onPress={() => setvisible(true)}
                 />
               </TouchableHighlight>
+              ):(
+                <RenderFile/>
+              )}
+              
             </View>
           </View>
           <Text style={styles.text}>

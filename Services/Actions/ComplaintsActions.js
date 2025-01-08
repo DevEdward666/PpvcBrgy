@@ -65,6 +65,7 @@ export const action_get_complaints_info = (complaint_pk) => async (
 export const action_insert_complaints = (
   subject,
   body,
+  complaintType,
   complaint_file,
 ) => async () => {
   var url = `${settings.BASE_URL}/api/complaintmobile/addComplaint`;
@@ -74,9 +75,15 @@ export const action_insert_complaints = (
   let formdata = new FormData();
   formdata.append('subject', subject);
   formdata.append('body', body);
+  formdata.append('type', complaintType);
+
+if (Array.isArray(complaint_file) && complaint_file.length > 0) {
   complaint_file.forEach((item) => {
     formdata.append('uploaded_files', item);
   });
+} else {
+  console.log('No files to upload.');
+}
 
   const fetchdata = await fetch(url, {
     method: 'POST',

@@ -56,6 +56,7 @@ const MeScreen = () => {
       flex: 1,
       width: '100%',
       height: '100%',
+      // backgroundColor:"#623256"
     },
     plate: {
       flex: 1,
@@ -89,13 +90,13 @@ const MeScreen = () => {
     });
   }, [dispatch, netinformation]);
   const handleYesAction = useCallback(() => {
-    dispatch(action_upadatenewuser(users_reducers?.user_pk));
+    dispatch(action_upadatenewuser(users_reducers?.user_pk,'true'));
     dispatch(action_get_userinfo());
     navigation.navigate('Family Assessment Data Form');
     //Actions.fad();
   }, [dispatch, users_reducers?.user_pk]);
   const handleNoAction = useCallback(() => {
-    dispatch(action_upadatenewuser(users_reducers?.user_pk));
+    dispatch(action_upadatenewuser(users_reducers?.user_pk,'false'));
     dispatch(action_get_userinfo());
   }, [dispatch, users_reducers?.user_pk]);
   useEffect(() => {
@@ -151,15 +152,32 @@ const MeScreen = () => {
       //Actions.fad();
     } else if (users_reducers?.ulo_pamilya !== null) {
       if (users_reducers?.new_user !== true) {
+        // Alert.alert(
+        //   'Famaily Assessment Data',
+        //   'Assessment data has already been submitted.',
+        // );
         Alert.alert(
           'Famaily Assessment Data',
-          'Assessment data has already been submitted.',
+          'Assessment data has already been submitted. Do you want to update your data?',
+          [
+            {
+              text: 'Yes',
+              onPress: () => handleUpdateAssessment(),
+              style: 'cancel',
+            },
+            {text: 'No'},
+          ],
         );
       } else {
         navigation.navigate('Family Assessment Data Form');
       }
     }
   }, [users_reducers]);
+  const handleUpdateAssessment = useCallback(() =>{
+    dispatch(action_upadatenewuser(users_reducers?.user_pk,'true'));
+    dispatch(action_get_userinfo());
+    navigation.navigate('Family Assessment Data Form');
+  }, [dispatch, users_reducers?.user_pk]);
   const gotosettings = useCallback(() => {
     navigation.navigate('Settings');
     //Actions.settings();
@@ -177,7 +195,9 @@ const MeScreen = () => {
         if (users_reducers?.user_pk !== '') {
           SplashScreen.hide();
         }
-        setImage('data:image/png;base64,' + users_reducers?.pic);
+          setImage('data:image/png;base64,' + users_reducers?.pic);
+   
+        // source={require('@expo/snack-static/react-native-logo.png')}
       }
     };
     mounted && getprem_image();
@@ -185,6 +205,10 @@ const MeScreen = () => {
       mounted = false;
     };
   }, [users_reducers]);
+  const defaultImages = {
+    m: require('../../assets/default/male-profile.png'),
+    f: require('../../assets/default/female-profile.png'),
+  };
   return (
     <ScrollView
       style={{height: screenHeight}}
@@ -208,21 +232,24 @@ const MeScreen = () => {
           <TouchableHighlight
             underlayColor="#1C00ff00"
             onPress={() => gotoinfo()}>
-            <Card radius={15} backgroundColor={'#ffffff'} elevation={25}>
+            <Card containerStyle={{borderRadius:15,elevation:5}} backgroundColor={'#ffffff'} elevation={25}>
               <View style={{flexDirection: 'row'}}>
                 <View style={{width: '30%', height: 100, margin: 5}}>
-                  <Image
-                    style={{
-                      marginTop: 10,
-                      marginStart: 10,
-                      width: 80,
-                      height: 80,
-                      borderRadius: 120 / 2,
-                      overflow: 'hidden',
-                      borderWidth: 3,
-                    }}
-                    source={{uri: getImage, scale: 1}}
-                  />
+                <Image
+                  style={{
+                    marginTop: 10,
+                    marginStart: 10,
+                    width: 80,
+                    height: 80,
+                    borderRadius: 80 / 2, // Simplified calculation
+                    overflow: 'hidden',
+                    borderWidth: 3,
+                  }}
+                  source={
+                    users_reducers?.pic?.length > 0 || users_reducers?.pic !== null
+                      ? { uri: getImage, scale: 1 }
+                      : defaultImages[users_reducers.gender] || defaultImages.f                  }
+                />
                 </View>
                 {users_reducers.last_name !== undefined ? (
                 <View
@@ -256,7 +283,7 @@ const MeScreen = () => {
               <TouchableHighlight
                 onPress={() => gotonews()}
                 underlayColor="white">
-                <Card radius={15} backgroundColor={'#ffffff'} elevation={25}>
+                <Card containerStyle={{borderRadius:15,elevation:5}}  elevation={25}>
                   <View
                     style={{
                       flexDirection: 'column',
@@ -305,7 +332,7 @@ const MeScreen = () => {
               <TouchableHighlight
                 onPress={() => gotoposts()}
                 underlayColor="white">
-                <Card radius={15} backgroundColor={'#ffffff'} elevation={25}>
+                <Card containerStyle={{borderRadius:15,elevation:5}} backgroundColor={'#ffffff'} elevation={25}>
                   <View
                     style={{
                       flexDirection: 'column',
@@ -357,7 +384,7 @@ const MeScreen = () => {
               <TouchableHighlight
                 onPress={() => gotocomplaints()}
                 underlayColor="white">
-                <Card radius={15} backgroundColor={'#ffffff'} elevation={25}>
+                <Card containerStyle={{borderRadius:15,elevation:5}} backgroundColor={'#ffffff'} elevation={25}>
                   <View
                     style={{
                       flexDirection: 'column',
@@ -406,7 +433,7 @@ const MeScreen = () => {
               <TouchableHighlight
                 onPress={() => gotofad()}
                 underlayColor="white">
-                <Card radius={15} backgroundColor={'#ffffff'} elevation={25}>
+                <Card containerStyle={{borderRadius:15,elevation:5}} backgroundColor={'#ffffff'} elevation={25}>
                   <View
                     style={{
                       flexDirection: 'column',
@@ -457,7 +484,7 @@ const MeScreen = () => {
               <TouchableHighlight
                 onPress={() => gotobrgy()}
                 underlayColor="white">
-                <Card radius={15} backgroundColor={'#ffffff'} elevation={25}>
+                <Card containerStyle={{borderRadius:15,elevation:5}} backgroundColor={'#ffffff'} elevation={25}>
                   <View
                     style={{
                       flexDirection: 'column',
@@ -506,7 +533,7 @@ const MeScreen = () => {
               <TouchableHighlight
                 onPress={() => gotosettings()}
                 underlayColor="white">
-                <Card radius={15} backgroundColor={'#ffffff'} elevation={25}>
+                <Card containerStyle={{borderRadius:15,elevation:5}} backgroundColor={'#ffffff'} elevation={25}>
                   <View
                     style={{
                       flexDirection: 'column',
@@ -556,7 +583,7 @@ const MeScreen = () => {
               <TouchableHighlight
                 onPress={() => removeValue()}
                 underlayColor="white">
-                <Card radius={15} backgroundColor={'#ffffff'} elevation={25}>
+                <Card containerStyle={{borderRadius:15,elevation:5}} backgroundColor={'#ffffff'} elevation={25}>
                   <View
                     style={{
                       flexDirection: 'column',

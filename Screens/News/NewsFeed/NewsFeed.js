@@ -205,7 +205,7 @@ const NewsFeed = () => {
           <TouchableHighlight
             onPress={() => gotonewsinfo(item)}
             underlayColor="white">
-            <Card style={{marginBottom: 5}} radius={1} elevation={15}>
+            <Card style={{marginBottom: 5}}  containerStyle={{borderRadius:15,elevation:5,marginBottom:5}}>
               <View
                 style={{
                   flexDirection: 'row',

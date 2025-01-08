@@ -19,7 +19,11 @@ const BarangayOfficials = () => {
   const brgyofficiallist = useSelector(
     state => state.BarangayOfficialReducers.data_barangay,
   );
-console.log(brgyofficiallist)
+  const defaultImages = {
+    m: require('../../assets/default/male-profile.png'),
+    f: require('../../assets/default/female-profile.png'),
+  };
+  console.log(brgyofficiallist)
   return (
     <ScrollView style={{height: screenHeight}}>
       <SafeAreaView style={{height: screenHeight}}>
@@ -38,9 +42,10 @@ console.log(brgyofficiallist)
               <View style={{display: 'flex', flexDirection: 'row'}}>
                 <View style={{width: screenWidth - 350}}>
                   <Image
-                    source={{
-                      uri: `data:image/png;base64,${items?.pic}`,
-                    }}
+                    source={
+                      items?.pic?.length > 0 || items?.pic !== null
+                        ? {uri: `data:image/png;base64,${items?.pic}`,}
+                        : defaultImages[items?.gender] || defaultImages.f}
                     style={{
                       marginTop: 5,
                       marginStart: 10,

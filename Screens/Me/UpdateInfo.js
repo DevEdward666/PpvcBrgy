@@ -130,6 +130,10 @@ const SignUpScreen = () => {
   const religion_list = useSelector(
     state => state.ResidentReducers.religion_list,
   );
+  const defaultImages = {
+    m: require('../../assets/default/male-profile.png'),
+    f: require('../../assets/default/female-profile.png'),
+  };
   useEffect(() => {
     let mounted = true;
     const info = () => {
@@ -156,7 +160,12 @@ const SignUpScreen = () => {
         seteduc('n');
         setenablesEduc(false);
       }
-      setresourcePathProfile('data:image/png;base64,' + users_reducers?.pic);
+      if(users_reducers?.pic!==null){
+        setresourcePathProfile('data:image/png;base64,' + users_reducers?.pic);
+      }else{
+        setresourcePathProfile("")
+      }
+   
       setPhotoSingleFile(users_reducers?.pic);
       if (month <= 9 && day <= 9) {
         setbirthdate(year + '-0' + month + '-0' + day);
@@ -614,34 +623,39 @@ const SignUpScreen = () => {
     setgrado('wala');
   }, []);
   const profileImage = useCallback(() => {
-    let options = {
-      title: 'You can choose one image',
-      maxWidth: 1280,
-      maxHeight: 720,
-      includeBase64: true,
-      base64: true,
-      storageOptions: {
-        skipBackup: true,
-      },
-    };
-    ImagePicker.launchImageLibrary(options, response => {
-      console.log(response);
-      setresourcePathProfile(response?.assets[0]?.uri); // update the local state, this will rerender your TomarFoto component with the photo uri path.
-      setPhotoSingleFile(response?.assets[0]?.base64); // update the local state, this will rerender your TomarFoto component with the photo uri path.
-
-      if (response.didCancel) {
-        console.log('User cancelled photo picker');
-        alert('You did not select any image');
-      } else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      } else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      } else {
-        const source = {uri: response?.assets[0]?.uri};
-        console.log(response?.assets[0]?.uri);
-        setprofileimageresponse(response);
-      }
-    });
+    try {
+      let options = {
+        title: 'You can choose one image',
+        maxWidth: 1280,
+        maxHeight: 720,
+        includeBase64: true,
+        base64: true,
+        storageOptions: {
+          skipBackup: true,
+        },
+      };
+      ImagePicker?.launchImageLibrary(options, response => {
+        
+          if (response.didCancel) {
+            alert('You did not select any image');
+          } else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+          } else if (response.customButton) {
+            console.log('User tapped custom button: ', response.customButton);
+          } else {
+            const source = {uri: response?.assets[0]?.uri};
+            setprofileimageresponse(response);
+            setresourcePathProfile(response?.assets[0]?.uri); // update the local state, this will rerender your TomarFoto component with the photo uri path.
+            setPhotoSingleFile(response?.assets[0]?.base64); // update the local state, this will rerender your TomarFoto component with the photo uri path.
+      
+          }
+  
+      });
+    } catch (error) {
+      alert('You did not select any image');
+      console.log('User cancelled photo picker');
+    }
+   
   }, [setresourcePathProfile, PhotoSingleFile]);
   const handleSubmitCredentials = useCallback(async () => {
     if (stepError == false) {
@@ -740,7 +754,6 @@ const SignUpScreen = () => {
     // source={require('../../assets/background/bgImage.jpg')}
     // resizeMode="cover"
     // blurRadius={20}>
-    <Card containerStyle={styles.plate}>
       <ScrollView style={{backgroundScrollViewColor: 'white'}}>
         <View style={styles.container}>
           <CustomAlert
@@ -793,9 +806,8 @@ const SignUpScreen = () => {
                     underlayColor="white">
                     <ImageBackground
                       style={styles.avatar}
-                      source={{
-                        uri: 'https://bootdey.com/img/Content/avatar/avatar6.png',
-                      }}>
+                      source={defaultImages[gender]}
+                      >
                       <Text style={styles.text}>Choose Image</Text>
                     </ImageBackground>
                   </TouchableHighlight>
@@ -1636,7 +1648,6 @@ const SignUpScreen = () => {
           </View>
         </View>
       </ScrollView>
-    </Card>
     //  </ImageBackground>
   );
 };
